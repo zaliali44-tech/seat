@@ -6,50 +6,90 @@
   <title>Seat Requirement & Utilization Planner</title>
   <style>
     :root{
-      --bg:#0f172a;
-      --panel:#111827;
-      --panel2:#020617;
-      --line:#334155;
-      --text:#e5e7eb;
-      --muted:#94a3b8;
+      --bg:#020816;
+      --panel:#071326;
+      --panel2:#09182f;
+      --line:rgba(57,110,201,.28);
+      --line2:rgba(95,137,204,.22);
+      --text:#f4f8ff;
+      --muted:#a8bfdc;
       --blue:#38bdf8;
       --purple:#8b5cf6;
       --green:#22c55e;
       --orange:#f59e0b;
       --red:#ef4444;
       --yellow:#fbbf24;
+      --primary:#15e6ff;
+      --primary2:#60a5fa;
+      --shadow:0 10px 30px rgba(0,0,0,.34);
+      --glow:0 0 0 1px rgba(21,230,255,.12), 0 0 24px rgba(21,230,255,.08);
     }
 
     *{box-sizing:border-box}
 
-    body{
+    html,body{
       margin:0;
-      padding:24px;
-      font-family:Arial,sans-serif;
-      background:linear-gradient(180deg,#0b1220 0%, #111827 100%);
+      padding:0;
+      font-family:Inter,Arial,sans-serif;
+      background:
+        radial-gradient(circle at 18% 12%, rgba(32,110,255,.18), transparent 28%),
+        radial-gradient(circle at 78% 10%, rgba(21,230,255,.14), transparent 24%),
+        linear-gradient(180deg, #031022 0%, #020816 44%, #01050f 100%);
+      background-attachment:fixed;
       color:var(--text);
     }
 
+    body{
+      padding:6px;
+      overflow-x:hidden;
+    }
+
+    .app{
+      width:100%;
+      max-width:none;
+      margin:0;
+      padding:10px 10px 24px;
+    }
+
     h1,h2,h3{margin-top:0}
-    p{line-height:1.5;color:var(--muted)}
-    .page-title{margin-bottom:20px}
+    p{line-height:1.6;color:var(--muted)}
+
+    .page-title{
+      margin-bottom:18px;
+    }
+
+    .page-title h1{
+      margin:0 0 8px;
+      font-size:clamp(26px,3.4vw,42px);
+      font-weight:800;
+      letter-spacing:-0.03em;
+      color:#fff;
+      text-shadow:0 0 18px rgba(21,230,255,.12);
+    }
+
+    .page-title p{
+      max-width:1100px;
+      margin:0;
+    }
 
     .panel{
-      background:rgba(17,24,39,0.96);
+      background:linear-gradient(180deg, rgba(8,20,40,.96) 0%, rgba(5,14,28,.96) 100%);
       border:1px solid var(--line);
-      border-radius:16px;
+      border-radius:18px;
       padding:18px;
       margin-bottom:18px;
-      box-shadow:0 10px 25px rgba(0,0,0,0.2);
+      box-shadow:var(--shadow), var(--glow);
+      backdrop-filter:blur(10px) saturate(1.06);
+      -webkit-backdrop-filter:blur(10px) saturate(1.06);
     }
 
     .helper{
-      background:#020617;
-      border:1px solid var(--line);
+      background:rgba(11,25,48,.76);
+      border:1px solid var(--line2);
       border-radius:12px;
       padding:12px 14px;
-      color:#cbd5e1;
-      line-height:1.6;
+      color:#d8e8ff;
+      line-height:1.7;
       font-size:13px;
       margin-top:14px;
     }
@@ -67,18 +107,26 @@
     }
 
     label{
-      font-size:13px;
+      font-size:12px;
       font-weight:700;
-      color:#cbd5e1;
+      color:#d7e6ff;
+      text-transform:uppercase;
+      letter-spacing:.03em;
     }
 
     input,select{
-      padding:9px 10px;
-      border-radius:8px;
-      border:1px solid #475569;
-      background:#020617;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid rgba(95,137,204,.34);
+      background:rgba(7,17,34,.92);
       color:#fff;
       font-size:14px;
+      outline:none;
+    }
+
+    input:focus,select:focus{
+      border-color:rgba(21,230,255,.62);
+      box-shadow:0 0 0 3px rgba(21,230,255,.12);
     }
 
     .btn-row{
@@ -90,27 +138,27 @@
 
     .btn{
       border:none;
-      border-radius:10px;
+      border-radius:999px;
       padding:10px 14px;
       cursor:pointer;
-      font-size:14px;
+      font-size:13px;
+      font-weight:800;
       color:#fff;
-      background:#1e293b;
-      border:1px solid #475569;
+      background:rgba(9,21,42,.78);
+      border:1px solid rgba(95,137,204,.34);
+      transition:.18s ease;
     }
 
     .btn:hover{
       transform:translateY(-1px);
-      background:#243244;
+      background:rgba(12,29,54,.82);
     }
 
     .btn-primary{
-      background:linear-gradient(90deg,#2563eb,#7c3aed);
-      border:none;
-    }
-
-    .btn-secondary{
-      background:#334155;
+      background:linear-gradient(180deg, rgba(25,244,255,.95), rgba(9,201,226,.92));
+      color:#03101c;
+      border:1px solid rgba(21,230,255,.82);
+      box-shadow:0 0 0 1px rgba(21,230,255,.18), 0 0 18px rgba(21,230,255,.18);
     }
 
     .hidden{
@@ -124,34 +172,40 @@
     }
 
     .kpi-card{
-      background:#020617;
-      border:1px solid var(--line);
-      border-radius:12px;
+      background:rgba(11,25,48,.76);
+      border:1px solid var(--line2);
+      border-radius:14px;
       padding:14px;
     }
 
     .kpi-title{
       color:var(--muted);
-      font-size:13px;
+      font-size:12px;
       margin-bottom:8px;
+      font-weight:700;
+      text-transform:uppercase;
+      letter-spacing:.04em;
     }
 
     .kpi-value{
       font-size:30px;
-      font-weight:700;
+      font-weight:800;
       margin-bottom:4px;
+      color:#fff;
     }
 
     .kpi-note{
       font-size:12px;
-      color:#cbd5e1;
+      color:#d8e8ff;
+      line-height:1.5;
     }
 
     .table-wrap{
       overflow:auto;
       max-height:420px;
-      border:1px solid var(--line);
+      border:1px solid var(--line2);
       border-radius:12px;
+      background:rgba(7,17,34,.72);
     }
 
     table{
@@ -162,16 +216,22 @@
 
     th,td{
       padding:10px 12px;
-      border-bottom:1px solid #253043;
+      border-bottom:1px solid rgba(95,137,204,.14);
       text-align:center;
       font-size:13px;
+      color:#eaf3ff;
+      white-space:nowrap;
     }
 
     thead th{
       position:sticky;
       top:0;
-      background:#020617;
+      background:rgba(10,23,44,.92);
       z-index:2;
+      color:#9db8db;
+      text-transform:uppercase;
+      letter-spacing:.05em;
+      font-size:11px;
     }
 
     .charts-grid{
@@ -181,9 +241,9 @@
     }
 
     .chart-card{
-      background:#020617;
-      border:1px solid var(--line);
-      border-radius:12px;
+      background:rgba(7,17,34,.45);
+      border:1px solid var(--line2);
+      border-radius:14px;
       padding:14px;
     }
 
@@ -194,18 +254,20 @@
     .chart-head h3{
       margin:0 0 4px 0;
       font-size:16px;
+      color:#fff;
     }
 
     .small{
       color:#cbd5e1;
       font-size:12px;
+      line-height:1.5;
     }
 
     .fake-chart{
       position:relative;
       height:250px;
-      border-left:1px solid var(--line);
-      border-bottom:1px solid var(--line);
+      border-left:1px solid var(--line2);
+      border-bottom:1px solid var(--line2);
       margin:14px 12px 28px 40px;
       background:
         linear-gradient(to top, rgba(148,163,184,0.10) 1px, transparent 1px) 0 0/100% 25%,
@@ -235,6 +297,7 @@
       justify-content:space-between;
       color:#64748b;
       font-size:10px;
+      gap:8px;
     }
 
     .bars{
@@ -296,8 +359,8 @@
     }
 
     .summary-box{
-      background:#020617;
-      border:1px solid var(--line);
+      background:rgba(11,25,48,.76);
+      border:1px solid var(--line2);
       border-radius:12px;
       padding:14px;
       line-height:1.8;
@@ -311,10 +374,12 @@
     }
 
     .formula-card{
-      background:#020617;
-      border:1px solid var(--line);
+      background:rgba(11,25,48,.76);
+      border:1px solid var(--line2);
       border-radius:12px;
       padding:14px;
+      line-height:1.7;
+      color:#eaf3ff;
     }
 
     .export-buttons{
@@ -322,6 +387,10 @@
       gap:10px;
       flex-wrap:wrap;
     }
+
+    .status-safe{color:var(--green); font-weight:700;}
+    .status-risk{color:var(--orange); font-weight:700;}
+    .status-high{color:var(--red); font-weight:700;}
 
     @media (max-width:1100px){
       .input-grid,
@@ -339,777 +408,1294 @@
 </head>
 <body>
 
-  <div class="page-title">
-    <h1>Seat Requirement & Utilization Planner</h1>
-    <p>
-      Mode-based design preview with dummy data. Inputs and outputs change depending on whether the user wants HC capacity from seats, seats needed from HC, seat utilization review, or shift mix optimization.
-    </p>
-  </div>
+  <div class="app">
 
-  <div class="panel">
-    <h2>Planning Inputs</h2>
-
-    <div class="input-grid">
-      <div class="field">
-        <label for="planningMode">Planning Mode</label>
-        <select id="planningMode" onchange="toggleModeSections()">
-          <option value="hc-capacity" selected>HC Capacity from Seats</option>
-          <option value="seats-needed">Seats Needed from HC</option>
-          <option value="seat-utilization">Seat Utilization Planner</option>
-          <option value="shift-optimization">Shift Mix Optimization</option>
-        </select>
-      </div>
-
-      <div class="field">
-        <label for="optimizationStyle">Optimization Style</label>
-        <select id="optimizationStyle">
-          <option>Standard</option>
-          <option selected>High Utilization</option>
-          <option>Max Utilization</option>
-        </select>
-      </div>
-
-      <div class="field">
-        <label for="hoopHours">HOOP Hours</label>
-        <select id="hoopHours">
-          <option>9</option>
-          <option>12</option>
-          <option>16</option>
-          <option>18</option>
-          <option selected>24</option>
-        </select>
-      </div>
-
-      <div class="field">
-        <label for="hoopDays">HOOP Days</label>
-        <select id="hoopDays">
-          <option>5</option>
-          <option>6</option>
-          <option selected>7</option>
-        </select>
-      </div>
-
-      <div class="field">
-        <label for="workingDays">Working Days / Agent</label>
-        <select id="workingDays">
-          <option selected>5</option>
-          <option>6</option>
-          <option>7</option>
-        </select>
-      </div>
+    <div class="page-title">
+      <h1>Seat Requirement & Utilization Planner</h1>
+      <p>
+        Mode-based seat planning tool for HC capacity from seats, seats needed from HC, seat utilization review, and shift mix optimization.
+        This version uses live calculations instead of dummy-only display logic.
+      </p>
     </div>
 
-    <div id="mode-hc-capacity" style="margin-top:14px;">
-      <div class="input-grid">
-        <div class="field">
-          <label>Total Seats Available</label>
-          <input type="number" value="120">
-        </div>
-
-        <div class="field">
-          <label>Blocked / Unusable Seats</label>
-          <input type="number" value="12">
-        </div>
-
-        <div class="field">
-          <label>Fixed Support Seats</label>
-          <input type="number" value="18">
-        </div>
-
-        <div class="field">
-          <label>Average Shift Length</label>
-          <select>
-            <option>8</option>
-            <option selected>8.5</option>
-            <option>9</option>
-            <option>9.5</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label>Shrinkage %</label>
-          <input type="number" value="30">
-        </div>
-
-        <div class="field">
-          <label>Planning Buffer %</label>
-          <input type="number" value="10">
-        </div>
-
-        <div class="field">
-          <label>Handover Gap (minutes)</label>
-          <input type="number" value="15">
-        </div>
-
-        <div class="field">
-          <label>Seat Utilization Target</label>
-          <select>
-            <option>Standard</option>
-            <option selected>High</option>
-            <option>Max</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="helper">
-        <strong>Dummy example for this mode:</strong><br>
-        120 total seats, 12 blocked seats, 18 fixed support seats, 24×7 HOOP, 5 working days per agent, 8.5-hour average shift, 30% shrinkage.
-      </div>
-    </div>
-
-    <div id="mode-seats-needed" class="hidden" style="margin-top:14px;">
-      <div class="input-grid">
-        <div class="field">
-          <label>Agent HC</label>
-          <input type="number" value="210">
-        </div>
-
-        <div class="field">
-          <label>Support HC</label>
-          <input type="number" value="18">
-        </div>
-
-        <div class="field">
-          <label>Training HC</label>
-          <input type="number" value="12">
-        </div>
-
-        <div class="field">
-          <label>Nesting HC</label>
-          <input type="number" value="10">
-        </div>
-
-        <div class="field">
-          <label>Support Seats Fixed?</label>
-          <select>
-            <option selected>Yes</option>
-            <option>No</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label>Average Shift Length</label>
-          <select>
-            <option>8</option>
-            <option selected>8.5</option>
-            <option>9</option>
-            <option>9.5</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label>Shrinkage %</label>
-          <input type="number" value="30">
-        </div>
-
-        <div class="field">
-          <label>Planning Buffer %</label>
-          <input type="number" value="10">
-        </div>
-      </div>
-
-      <div class="helper">
-        <strong>Dummy example for this mode:</strong><br>
-        210 agent HC, 18 support HC, 12 training HC, 10 nesting HC, support seats fixed, 24×7 HOOP, 5 working days per agent.
-      </div>
-    </div>
-
-    <div id="mode-seat-utilization" class="hidden" style="margin-top:14px;">
-      <div class="input-grid">
-        <div class="field">
-          <label>Total Seats</label>
-          <input type="number" value="120">
-        </div>
-
-        <div class="field">
-          <label>Currently Used Seats</label>
-          <input type="number" value="96">
-        </div>
-
-        <div class="field">
-          <label>Blocked Seats</label>
-          <input type="number" value="12">
-        </div>
-
-        <div class="field">
-          <label>Fixed Support Seats</label>
-          <input type="number" value="18">
-        </div>
-
-        <div class="field">
-          <label>Idle Seat Hours / Day</label>
-          <input type="number" value="132">
-        </div>
-
-        <div class="field">
-          <label>Average Shift Length</label>
-          <select>
-            <option>8</option>
-            <option selected>8.5</option>
-            <option>9</option>
-            <option>9.5</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label>Current Shift Mix</label>
-          <select>
-            <option>Single Shift</option>
-            <option>2 Shift Model</option>
-            <option selected>3 Wave Model</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="helper">
-        <strong>Dummy example for this mode:</strong><br>
-        120 seats, 96 used seats, 12 blocked seats, 18 fixed support seats, 132 idle seat hours per day, current operation on a 3-wave setup.
-      </div>
-    </div>
-
-    <div id="mode-shift-optimization" class="hidden" style="margin-top:14px;">
-      <div class="input-grid">
-        <div class="field">
-          <label>Total Seats Available</label>
-          <input type="number" value="120">
-        </div>
-
-        <div class="field">
-          <label>Blocked Seats</label>
-          <input type="number" value="12">
-        </div>
-
-        <div class="field">
-          <label>Fixed Support Seats</label>
-          <input type="number" value="18">
-        </div>
-
-        <div class="field">
-          <label>Shift Design Goal</label>
-          <select>
-            <option>Low Risk</option>
-            <option selected>Balanced</option>
-            <option>Max Seat Utilization</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label>Average Shift Length</label>
-          <select>
-            <option>8</option>
-            <option selected>8.5</option>
-            <option>9</option>
-            <option>9.5</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label>Handover Gap (minutes)</label>
-          <input type="number" value="15">
-        </div>
-
-        <div class="field">
-          <label>Shrinkage %</label>
-          <input type="number" value="30">
-        </div>
-      </div>
-
-      <div class="helper">
-        <strong>Dummy example for this mode:</strong><br>
-        24×7 setup, 120 seats, 12 blocked seats, 18 fixed support seats, goal is balanced shift optimization using staggered shift waves.
-      </div>
-    </div>
-
-    <div class="btn-row">
-      <button class="btn btn-primary">Calculate Planner</button>
-      <button class="btn btn-secondary">Load Dummy Data</button>
-      <button class="btn btn-secondary">Reset Inputs</button>
-    </div>
-  </div>
-
-  <div class="panel">
-    <h2>KPI Summary</h2>
-
-    <div class="kpi-grid">
-      <div class="kpi-card">
-        <div class="kpi-title">Usable Production Seats</div>
-        <div class="kpi-value">90</div>
-        <div class="kpi-note">120 total - 12 blocked - 18 support seats</div>
-      </div>
-
-      <div class="kpi-card">
-        <div class="kpi-title">Concurrent Seat Capacity</div>
-        <div class="kpi-value">90</div>
-        <div class="kpi-note">Seats available for direct production seating</div>
-      </div>
-
-      <div class="kpi-card">
-        <div class="kpi-title">Roster HC Supported</div>
-        <div class="kpi-value">228</div>
-        <div class="kpi-note">Based on HOOP, working days, and reuse logic</div>
-      </div>
-
-      <div class="kpi-card">
-        <div class="kpi-title">Productive HC Supported</div>
-        <div class="kpi-value">160</div>
-        <div class="kpi-note">After applying shrinkage adjustment</div>
-      </div>
-
-      <div class="kpi-card">
-        <div class="kpi-title">Seat Reuse Factor</div>
-        <div class="kpi-value">2.11x</div>
-        <div class="kpi-note">Indicative seat turn in current model</div>
-      </div>
-
-      <div class="kpi-card">
-        <div class="kpi-title">Seat Utilization %</div>
-        <div class="kpi-value">178%</div>
-        <div class="kpi-note">High utilization dummy scenario</div>
-      </div>
-
-      <div class="kpi-card">
-        <div class="kpi-title">Recommended Shift Mix</div>
-        <div class="kpi-value" style="font-size:20px;">9h + 9h + 8h</div>
-        <div class="kpi-note">Balanced seat reuse without extreme overlap</div>
-      </div>
-
-      <div class="kpi-card">
-        <div class="kpi-title">Seat Gap / Surplus</div>
-        <div class="kpi-value">-18</div>
-        <div class="kpi-note">Illustrative gap under dummy requirement</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="panel">
-    <h2>HOOP Capacity Comparison</h2>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Scenario</th>
-            <th>HOOP Hours</th>
-            <th>HOOP Days</th>
-            <th>Usable Seats</th>
-            <th>Reuse Factor</th>
-            <th>Roster HC Supported</th>
-            <th>Productive HC Supported</th>
-            <th>Comments</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>9×7</td>
-            <td>9</td>
-            <td>7</td>
-            <td>90</td>
-            <td>0.98x</td>
-            <td>88</td>
-            <td>62</td>
-            <td>Near single-wave behavior</td>
-          </tr>
-          <tr>
-            <td>12×7</td>
-            <td>12</td>
-            <td>7</td>
-            <td>90</td>
-            <td>1.29x</td>
-            <td>116</td>
-            <td>81</td>
-            <td>Good for moderate seat reuse</td>
-          </tr>
-          <tr>
-            <td>16×7</td>
-            <td>16</td>
-            <td>7</td>
-            <td>90</td>
-            <td>1.67x</td>
-            <td>150</td>
-            <td>105</td>
-            <td>Balanced long-hour scenario</td>
-          </tr>
-          <tr>
-            <td>18×7</td>
-            <td>18</td>
-            <td>7</td>
-            <td>90</td>
-            <td>1.88x</td>
-            <td>169</td>
-            <td>118</td>
-            <td>Higher overlap risk starts here</td>
-          </tr>
-          <tr>
-            <td>24×7</td>
-            <td>24</td>
-            <td>7</td>
-            <td>90</td>
-            <td>2.11x</td>
-            <td>228</td>
-            <td>160</td>
-            <td>Maximum supportable HC in dummy view</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="btn-row">
-      <button class="btn">Download HOOP Data</button>
-    </div>
-  </div>
-
-  <div class="panel">
-    <h2>Scenario Comparison</h2>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Scenario</th>
-            <th>Shift Mix</th>
-            <th>Seat Utilization</th>
-            <th>Used Production Seats</th>
-            <th>Support Seats</th>
-            <th>Total Seats Used</th>
-            <th>Idle Seat Hours</th>
-            <th>Risk Level</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Standard</td>
-            <td>2 × 9h</td>
-            <td>142%</td>
-            <td>84</td>
-            <td>18</td>
-            <td>102</td>
-            <td>210h</td>
-            <td>Low</td>
-          </tr>
-          <tr>
-            <td>High Utilization</td>
-            <td>9h + 9h + 8h</td>
-            <td>178%</td>
-            <td>90</td>
-            <td>18</td>
-            <td>108</td>
-            <td>132h</td>
-            <td>Medium</td>
-          </tr>
-          <tr>
-            <td>Max Utilization</td>
-            <td>3 tight waves</td>
-            <td>201%</td>
-            <td>90</td>
-            <td>18</td>
-            <td>108</td>
-            <td>88h</td>
-            <td>High</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="btn-row">
-      <button class="btn">Download Scenario Data</button>
-    </div>
-  </div>
     <div class="panel">
-    <h2>Recommended Solution</h2>
-    <div class="summary-box">
-      <strong>Recommended shift design:</strong> 9h + 9h + 8h staggered model<br>
-      <strong>Wave 1:</strong> 06:00 to 15:00<br>
-      <strong>Wave 2:</strong> 14:00 to 23:00<br>
-      <strong>Wave 3:</strong> 22:00 to 06:00<br><br>
-      This dummy setup aims to keep support seating fixed while maximizing production seat rotation. It avoids the heavy visual and operational distortion that happens under fully aggressive seat reuse. It also fits better for explaining capacity projection to Operations when the question is: <strong>How much production HC can this seat base support?</strong>
+      <h2>Planning Inputs</h2>
+
+      <div class="input-grid">
+        <div class="field">
+          <label for="planningMode">Planning Mode</label>
+          <select id="planningMode">
+            <option value="hc-capacity" selected>HC Capacity from Seats</option>
+            <option value="seats-needed">Seats Needed from HC</option>
+            <option value="seat-utilization">Seat Utilization Planner</option>
+            <option value="shift-optimization">Shift Mix Optimization</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="optimizationStyle">Optimization Style</label>
+          <select id="optimizationStyle">
+            <option value="standard">Standard</option>
+            <option value="high" selected>High Utilization</option>
+            <option value="max">Max Utilization</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="hoopHours">HOOP Hours</label>
+          <select id="hoopHours">
+            <option>9</option>
+            <option>12</option>
+            <option>16</option>
+            <option>18</option>
+            <option selected>24</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="hoopDays">HOOP Days</label>
+          <select id="hoopDays">
+            <option>5</option>
+            <option>6</option>
+            <option selected>7</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="workingDays">Working Days / Agent</label>
+          <select id="workingDays">
+            <option selected>5</option>
+            <option>6</option>
+            <option>7</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="mode-hc-capacity" style="margin-top:14px;">
+        <div class="input-grid">
+          <div class="field">
+            <label>Total Seats Available</label>
+            <input type="number" id="hcTotalSeats" value="120">
+          </div>
+
+          <div class="field">
+            <label>Blocked / Unusable Seats</label>
+            <input type="number" id="hcBlockedSeats" value="12">
+          </div>
+
+          <div class="field">
+            <label>Fixed Support Seats</label>
+            <input type="number" id="hcSupportSeats" value="18">
+          </div>
+
+          <div class="field">
+            <label>Average Shift Length</label>
+            <select id="hcShiftLength">
+              <option>8</option>
+              <option selected>8.5</option>
+              <option>9</option>
+              <option>9.5</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Shrinkage %</label>
+            <input type="number" id="hcShrinkage" value="30">
+          </div>
+
+          <div class="field">
+            <label>Planning Buffer %</label>
+            <input type="number" id="hcBuffer" value="10">
+          </div>
+
+          <div class="field">
+            <label>Handover Gap (minutes)</label>
+            <input type="number" id="hcHandover" value="15">
+          </div>
+
+          <div class="field">
+            <label>Required Productive HC</label>
+            <input type="number" id="hcRequiredProductiveHC" value="178">
+          </div>
+
+          <div class="field">
+            <label>Reusable Support Seats?</label>
+            <select id="hcReusableSupport">
+              <option value="no" selected>No</option>
+              <option value="yes">Yes</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="helper">
+          <strong>HC Capacity from Seats:</strong><br>
+          Calculates how much roster HC and productive HC your current seat base can support.
+        </div>
+      </div>
+
+      <div id="mode-seats-needed" class="hidden" style="margin-top:14px;">
+        <div class="input-grid">
+          <div class="field">
+            <label>Required Productive HC</label>
+            <input type="number" id="snAgentHC" value="210">
+          </div>
+
+          <div class="field">
+            <label>Support HC</label>
+            <input type="number" id="snSupportHC" value="18">
+          </div>
+
+          <div class="field">
+            <label>Training HC</label>
+            <input type="number" id="snTrainingHC" value="12">
+          </div>
+
+          <div class="field">
+            <label>Nesting HC</label>
+            <input type="number" id="snNestingHC" value="10">
+          </div>
+
+          <div class="field">
+            <label>Support Seats Fixed?</label>
+            <select id="snSupportFixed">
+              <option value="yes" selected>Yes</option>
+              <option value="no">No</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Average Shift Length</label>
+            <select id="snShiftLength">
+              <option>8</option>
+              <option selected>8.5</option>
+              <option>9</option>
+              <option>9.5</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Shrinkage %</label>
+            <input type="number" id="snShrinkage" value="30">
+          </div>
+
+          <div class="field">
+            <label>Planning Buffer %</label>
+            <input type="number" id="snBuffer" value="10">
+          </div>
+
+          <div class="field">
+            <label>Handover Gap (minutes)</label>
+            <input type="number" id="snHandover" value="15">
+          </div>
+        </div>
+
+        <div class="helper">
+          <strong>Seats Needed from HC:</strong><br>
+          Calculates the seat base required to support the target HC after shrinkage and seat reuse assumptions.
+        </div>
+      </div>
+
+      <div id="mode-seat-utilization" class="hidden" style="margin-top:14px;">
+        <div class="input-grid">
+          <div class="field">
+            <label>Total Seats</label>
+            <input type="number" id="suTotalSeats" value="120">
+          </div>
+
+          <div class="field">
+            <label>Currently Used Seats</label>
+            <input type="number" id="suUsedSeats" value="96">
+          </div>
+
+          <div class="field">
+            <label>Blocked Seats</label>
+            <input type="number" id="suBlockedSeats" value="12">
+          </div>
+
+          <div class="field">
+            <label>Fixed Support Seats</label>
+            <input type="number" id="suSupportSeats" value="18">
+          </div>
+
+          <div class="field">
+            <label>Idle Seat Hours / Day</label>
+            <input type="number" id="suIdleSeatHours" value="132">
+          </div>
+
+          <div class="field">
+            <label>Overlap Waste Hours / Day</label>
+            <input type="number" id="suOverlapWaste" value="74">
+          </div>
+
+          <div class="field">
+            <label>Dedicated Seat Waste Hours / Day</label>
+            <input type="number" id="suDedicatedWaste" value="41">
+          </div>
+
+          <div class="field">
+            <label>Average Shift Length</label>
+            <select id="suShiftLength">
+              <option>8</option>
+              <option selected>8.5</option>
+              <option>9</option>
+              <option>9.5</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Current Shift Mix</label>
+            <select id="suShiftMix">
+              <option>Single Shift</option>
+              <option>2 Shift Model</option>
+              <option selected>3 Wave Model</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="helper">
+          <strong>Seat Utilization Planner:</strong><br>
+          Reviews current seat usage, waste hours, and utilization pressure on the floor.
+        </div>
+      </div>
+
+      <div id="mode-shift-optimization" class="hidden" style="margin-top:14px;">
+        <div class="input-grid">
+          <div class="field">
+            <label>Total Seats Available</label>
+            <input type="number" id="soTotalSeats" value="120">
+          </div>
+
+          <div class="field">
+            <label>Blocked Seats</label>
+            <input type="number" id="soBlockedSeats" value="12">
+          </div>
+
+          <div class="field">
+            <label>Fixed Support Seats</label>
+            <input type="number" id="soSupportSeats" value="18">
+          </div>
+
+          <div class="field">
+            <label>Shift Design Goal</label>
+            <select id="soGoal">
+              <option value="low">Low Risk</option>
+              <option value="balanced" selected>Balanced</option>
+              <option value="max">Max Seat Utilization</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Average Shift Length</label>
+            <select id="soShiftLength">
+              <option>8</option>
+              <option selected>8.5</option>
+              <option>9</option>
+              <option>9.5</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Handover Gap (minutes)</label>
+            <input type="number" id="soHandover" value="15">
+          </div>
+
+          <div class="field">
+            <label>Shrinkage %</label>
+            <input type="number" id="soShrinkage" value="30">
+          </div>
+
+          <div class="field">
+            <label>Required Productive HC</label>
+            <input type="number" id="soRequiredHC" value="178">
+          </div>
+        </div>
+
+        <div class="helper">
+          <strong>Shift Mix Optimization:</strong><br>
+          Compares standard, high-utilization, and max-utilization shift wave designs and recommends the best fit.
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-primary" id="calcBtn">Calculate Planner</button>
+        <button class="btn" id="loadDummyBtn">Load Dummy Data</button>
+        <button class="btn" id="resetBtn">Reset Inputs</button>
+      </div>
     </div>
-    <div class="btn-row">
-      <button class="btn">Download Shift Recommendation</button>
+
+    <div class="panel">
+      <h2>KPI Summary</h2>
+
+      <div class="kpi-grid" id="kpiGrid"></div>
     </div>
-  </div>
 
-  <div class="panel">
-    <h2>Charts</h2>
-
-    <div class="charts-grid">
-
-      <div class="chart-card">
-        <div class="chart-head">
-          <h3>HC Capacity by HOOP Scenario</h3>
-          <div class="small">Bars: Roster HC Supported | Line: Productive HC Supported</div>
-        </div>
-        <div class="fake-chart">
-          <div class="y-axis">
-            <span>240</span>
-            <span>180</span>
-            <span>120</span>
-            <span>60</span>
-            <span>0</span>
-          </div>
-          <div class="bars">
-            <div class="bar-group">
-              <div class="bar blue" style="height:37%"></div>
-              <div class="bar purple" style="height:26%"></div>
-            </div>
-            <div class="bar-group">
-              <div class="bar blue" style="height:48%"></div>
-              <div class="bar purple" style="height:34%"></div>
-            </div>
-            <div class="bar-group">
-              <div class="bar blue" style="height:62%"></div>
-              <div class="bar purple" style="height:44%"></div>
-            </div>
-            <div class="bar-group">
-              <div class="bar blue" style="height:70%"></div>
-              <div class="bar purple" style="height:49%"></div>
-            </div>
-            <div class="bar-group">
-              <div class="bar blue" style="height:95%"></div>
-              <div class="bar purple" style="height:67%"></div>
-            </div>
-          </div>
-          <svg class="line-layer" viewBox="0 0 100 100" preserveAspectRatio="none">
-            <polyline fill="none" stroke="#22c55e" stroke-width="1.6" points="10,74 30,66 50,56 70,51 90,35"></polyline>
-          </svg>
-          <div class="x-axis">
-            <span>9×7</span>
-            <span>12×7</span>
-            <span>16×7</span>
-            <span>18×7</span>
-            <span>24×7</span>
-          </div>
-        </div>
-        <div class="legend">
-          <div class="legend-item"><span class="swatch" style="background:#38bdf8"></span>Roster HC Supported</div>
-          <div class="legend-item"><span class="swatch" style="background:#8b5cf6"></span>Productive HC</div>
-          <div class="legend-item"><span class="swatch" style="background:#22c55e"></span>Trend Line</div>
-        </div>
-        <div class="btn-row">
-          <button class="btn">Download Chart PNG</button>
-          <button class="btn btn-secondary">Download Chart Data</button>
-        </div>
+    <div class="panel">
+      <h2>HOOP Capacity Comparison</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Scenario</th>
+              <th>HOOP Hours</th>
+              <th>HOOP Days</th>
+              <th>Usable Seats</th>
+              <th>Reuse Factor</th>
+              <th>Roster HC Supported</th>
+              <th>Productive HC Supported</th>
+              <th>Comments</th>
+            </tr>
+          </thead>
+          <tbody id="hoopTableBody"></tbody>
+        </table>
       </div>
-
-      <div class="chart-card">
-        <div class="chart-head">
-          <h3>Seat Utilization by Scenario</h3>
-          <div class="small">Bars: Utilization % | Line: Seat Gap / Surplus</div>
-        </div>
-        <div class="fake-chart">
-          <div class="y-axis">
-            <span>220</span>
-            <span>165</span>
-            <span>110</span>
-            <span>55</span>
-            <span>0</span>
-          </div>
-          <div class="bars">
-            <div class="bar-group">
-              <div class="bar blue" style="height:65%"></div>
-            </div>
-            <div class="bar-group">
-              <div class="bar purple" style="height:81%"></div>
-            </div>
-            <div class="bar-group">
-              <div class="bar red" style="height:91%"></div>
-            </div>
-          </div>
-          <svg class="line-layer" viewBox="0 0 100 100" preserveAspectRatio="none">
-            <polyline fill="none" stroke="#fbbf24" stroke-width="1.6" points="15,58 50,49 85,45"></polyline>
-          </svg>
-          <div class="x-axis">
-            <span>Standard</span>
-            <span>High Util.</span>
-            <span>Max Util.</span>
-          </div>
-        </div>
-        <div class="legend">
-          <div class="legend-item"><span class="swatch" style="background:#38bdf8"></span>Standard</div>
-          <div class="legend-item"><span class="swatch" style="background:#8b5cf6"></span>High Utilization</div>
-          <div class="legend-item"><span class="swatch" style="background:#ef4444"></span>Max Utilization</div>
-          <div class="legend-item"><span class="swatch" style="background:#fbbf24"></span>Seat Gap Trend</div>
-        </div>
-        <div class="btn-row">
-          <button class="btn">Download Chart PNG</button>
-          <button class="btn btn-secondary">Download Chart Data</button>
-        </div>
-      </div>
-
-      <div class="chart-card">
-        <div class="chart-head">
-          <h3>Seat Hour Analysis</h3>
-          <div class="small">Bars: Used vs Idle vs Overlap Waste Hours</div>
-        </div>
-        <div class="fake-chart">
-          <div class="y-axis">
-            <span>900</span>
-            <span>675</span>
-            <span>450</span>
-            <span>225</span>
-            <span>0</span>
-          </div>
-          <div class="bars">
-            <div class="bar-group">
-              <div class="bar green" style="height:76%"></div>
-              <div class="bar orange" style="height:24%"></div>
-              <div class="bar red" style="height:12%"></div>
-            </div>
-            <div class="bar-group">
-              <div class="bar green" style="height:84%"></div>
-              <div class="bar orange" style="height:15%"></div>
-              <div class="bar red" style="height:9%"></div>
-            </div>
-            <div class="bar-group">
-              <div class="bar green" style="height:89%"></div>
-              <div class="bar orange" style="height:10%"></div>
-              <div class="bar red" style="height:7%"></div>
-            </div>
-          </div>
-          <div class="x-axis">
-            <span>Standard</span>
-            <span>High Util.</span>
-            <span>Max Util.</span>
-          </div>
-        </div>
-        <div class="legend">
-          <div class="legend-item"><span class="swatch" style="background:#22c55e"></span>Used Seat Hours</div>
-          <div class="legend-item"><span class="swatch" style="background:#f59e0b"></span>Idle Seat Hours</div>
-          <div class="legend-item"><span class="swatch" style="background:#ef4444"></span>Overlap Waste</div>
-        </div>
-        <div class="btn-row">
-          <button class="btn">Download Chart PNG</button>
-          <button class="btn btn-secondary">Download Chart Data</button>
-        </div>
-      </div>
-
-      <div class="chart-card">
-        <div class="chart-head">
-          <h3>Shift Wave Utilization</h3>
-          <div class="small">Bars: Wave HC Load | Line: Utilization %</div>
-        </div>
-        <div class="fake-chart">
-          <div class="y-axis">
-            <span>120</span>
-            <span>90</span>
-            <span>60</span>
-            <span>30</span>
-            <span>0</span>
-          </div>
-          <div class="bars">
-            <div class="bar-group"><div class="bar blue" style="height:78%"></div></div>
-            <div class="bar-group"><div class="bar purple" style="height:72%"></div></div>
-            <div class="bar-group"><div class="bar green" style="height:55%"></div></div>
-          </div>
-          <svg class="line-layer" viewBox="0 0 100 100" preserveAspectRatio="none">
-            <polyline fill="none" stroke="#f59e0b" stroke-width="1.6" points="15,54 50,36 85,44"></polyline>
-          </svg>
-          <div class="x-axis">
-            <span>Wave 1</span>
-            <span>Wave 2</span>
-            <span>Wave 3</span>
-          </div>
-        </div>
-        <div class="legend">
-          <div class="legend-item"><span class="swatch" style="background:#38bdf8"></span>Wave HC Load</div>
-          <div class="legend-item"><span class="swatch" style="background:#f59e0b"></span>Utilization Trend</div>
-        </div>
-        <div class="btn-row">
-          <button class="btn">Download Chart PNG</button>
-          <button class="btn btn-secondary">Download Chart Data</button>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <div class="panel">
-    <h2>Lean Waste View</h2>
-    <div class="kpi-grid">
-      <div class="kpi-card">
-        <div class="kpi-title">Idle Seat Waste</div>
-        <div class="kpi-value">132h</div>
-        <div class="kpi-note">Unused but available seat capacity</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-title">Overlap Waste</div>
-        <div class="kpi-value">74h</div>
-        <div class="kpi-note">Seat time lost in overlap inefficiency</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-title">Dedicated Seat Waste</div>
-        <div class="kpi-value">41h</div>
-        <div class="kpi-note">Support or reserved seat hours not used</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-title">Total Waste</div>
-        <div class="kpi-value">247h</div>
-        <div class="kpi-note">Combined dummy seat waste measure</div>
+      <div class="btn-row">
+        <button class="btn" id="downloadHoopBtn">Download HOOP Data</button>
       </div>
     </div>
-    <div class="btn-row">
-      <button class="btn">Download Waste Data</button>
-    </div>
-  </div>
 
-  <div class="panel">
-    <h2>Planner Insight</h2>
-    <div class="summary-box">
-      In this redesigned dummy view, the page is mapped more logically for <strong>HC Capacity from Seats</strong>. Since the main question is how much production HC can be supported from a fixed seat base, the inputs focus on seats, HOOP, working days, shift length, shrinkage, and fixed support seats rather than broader HC requirement fields. This makes the page more relevant for Operations and leadership discussions where the user wants a seat-based capacity projection first.
+    <div class="panel">
+      <h2>Scenario Comparison</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Scenario</th>
+              <th>Shift Mix</th>
+              <th>Seat Utilization</th>
+              <th>Used Production Seats</th>
+              <th>Support Seats</th>
+              <th>Total Seats Used</th>
+              <th>Idle Seat Hours</th>
+              <th>Risk Level</th>
+            </tr>
+          </thead>
+          <tbody id="scenarioTableBody"></tbody>
+        </table>
+      </div>
+      <div class="btn-row">
+        <button class="btn" id="downloadScenarioBtn">Download Scenario Data</button>
+      </div>
     </div>
-  </div>
 
-  <div class="panel">
-    <h2>Formula Glossary</h2>
-    <div class="formula-grid">
-      <div class="formula-card">
-        <strong>Usable Production Seats</strong><br><br>
-        Total Seats Available − Blocked Seats − Fixed Support Seats
-      </div>
-      <div class="formula-card">
-        <strong>Seat Reuse Factor</strong><br><br>
-        HOOP Hours ÷ Average Shift Length, adjusted for overlap and handover tolerance
-      </div>
-      <div class="formula-card">
-        <strong>Roster HC Supported</strong><br><br>
-        Usable Production Seats × Seat Reuse Factor × (HOOP Days ÷ Working Days per Agent)
-      </div>
-      <div class="formula-card">
-        <strong>Productive HC Supported</strong><br><br>
-        Roster HC Supported × (1 − Shrinkage %)
+    <div class="panel">
+      <h2>Recommended Solution</h2>
+      <div class="summary-box" id="recommendationBox"></div>
+      <div class="btn-row">
+        <button class="btn" id="downloadRecommendationBtn">Download Shift Recommendation</button>
       </div>
     </div>
-  </div>
 
-  <div class="panel">
-    <h2>Export Outputs</h2>
-    <div class="export-buttons">
-      <button class="btn">Download Summary</button>
-      <button class="btn">Download HOOP Comparison</button>
-      <button class="btn">Download Scenario Comparison</button>
-      <button class="btn">Download Shift Recommendation</button>
-      <button class="btn">Download Waste View</button>
-      <button class="btn">Download All Chart Data</button>
-      <button class="btn">Download Full Seat Planning Report</button>
+    <div class="panel">
+      <h2>Charts</h2>
+
+      <div class="charts-grid">
+
+        <div class="chart-card">
+          <div class="chart-head">
+            <h3>HC Capacity by HOOP Scenario</h3>
+            <div class="small">Bars: Roster HC Supported | Bars: Productive HC Supported</div>
+          </div>
+          <div id="chartHoop"></div>
+          <div class="btn-row">
+            <button class="btn" id="downloadHoopChartBtn">Download Chart Data</button>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <div class="chart-head">
+            <h3>Seat Utilization by Scenario</h3>
+            <div class="small">Bars: Utilization % | Bars: Seat Gap / Surplus</div>
+          </div>
+          <div id="chartScenario"></div>
+          <div class="btn-row">
+            <button class="btn" id="downloadScenarioChartBtn">Download Chart Data</button>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <div class="chart-head">
+            <h3>Seat Hour Analysis</h3>
+            <div class="small">Bars: Used vs Idle vs Overlap Waste Hours</div>
+          </div>
+          <div id="chartWaste"></div>
+          <div class="btn-row">
+            <button class="btn" id="downloadWasteChartBtn">Download Chart Data</button>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <div class="chart-head">
+            <h3>Shift Wave Utilization</h3>
+            <div class="small">Bars: Wave HC Load</div>
+          </div>
+          <div id="chartWaves"></div>
+          <div class="btn-row">
+            <button class="btn" id="downloadWaveChartBtn">Download Chart Data</button>
+          </div>
+        </div>
+
+      </div>
     </div>
+
+    <div class="panel">
+      <h2>Lean Waste View</h2>
+      <div class="kpi-grid" id="wasteGrid"></div>
+      <div class="btn-row">
+        <button class="btn" id="downloadWasteBtn">Download Waste Data</button>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>Planner Insight</h2>
+      <div class="summary-box" id="plannerInsight"></div>
+    </div>
+
+    <div class="panel">
+      <h2>Formula Glossary</h2>
+      <div class="formula-grid">
+        <div class="formula-card">
+          <strong>Usable Production Seats</strong><br><br>
+          Total Seats Available − Blocked Seats − Fixed Support Seats
+        </div>
+        <div class="formula-card">
+          <strong>Effective Seat Block Hours</strong><br><br>
+          Average Shift Length + (Handover Gap Minutes ÷ 60)
+        </div>
+        <div class="formula-card">
+          <strong>Theoretical Reuse Factor</strong><br><br>
+          HOOP Hours ÷ Effective Seat Block Hours
+        </div>
+        <div class="formula-card">
+          <strong>Practical Reuse Factor</strong><br><br>
+          Theoretical Reuse Factor × Reuse Efficiency Factor
+        </div>
+        <div class="formula-card">
+          <strong>Roster HC Supported</strong><br><br>
+          Usable Production Seats × Practical Reuse Factor × (HOOP Days ÷ Working Days per Agent)
+        </div>
+        <div class="formula-card">
+          <strong>Productive HC Supported</strong><br><br>
+          Roster HC Supported × (1 − Shrinkage %)
+        </div>
+        <div class="formula-card">
+          <strong>Seats Needed from HC</strong><br><br>
+          Required Roster HC ÷ (Practical Reuse Factor × (HOOP Days ÷ Working Days per Agent))
+        </div>
+        <div class="formula-card">
+          <strong>Required Roster HC</strong><br><br>
+          Required Productive HC ÷ (1 − Shrinkage %), then apply planning buffer
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>Export Outputs</h2>
+      <div class="export-buttons">
+        <button class="btn" id="downloadSummaryBtn">Download Summary</button>
+        <button class="btn" id="downloadAllBtn">Download Full Seat Planning Report</button>
+      </div>
+    </div>
+
   </div>
 
   <script>
-    function toggleModeSections(){
-      const mode = document.getElementById("planningMode").value;
+    const defaultData = {
+      planningMode: "hc-capacity",
+      optimizationStyle: "high",
+      hoopHours: 24,
+      hoopDays: 7,
+      workingDays: 5,
 
-      document.getElementById("mode-hc-capacity").classList.add("hidden");
-      document.getElementById("mode-seats-needed").classList.add("hidden");
-      document.getElementById("mode-seat-utilization").classList.add("hidden");
-      document.getElementById("mode-shift-optimization").classList.add("hidden");
+      hcTotalSeats: 120,
+      hcBlockedSeats: 12,
+      hcSupportSeats: 18,
+      hcShiftLength: 8.5,
+      hcShrinkage: 30,
+      hcBuffer: 10,
+      hcHandover: 15,
+      hcRequiredProductiveHC: 178,
+      hcReusableSupport: "no",
 
-      if(mode === "hc-capacity"){
-        document.getElementById("mode-hc-capacity").classList.remove("hidden");
-      } else if(mode === "seats-needed"){
-        document.getElementById("mode-seats-needed").classList.remove("hidden");
-      } else if(mode === "seat-utilization"){
-        document.getElementById("mode-seat-utilization").classList.remove("hidden");
-      } else if(mode === "shift-optimization"){
-        document.getElementById("mode-shift-optimization").classList.remove("hidden");
-      }
+      snAgentHC: 210,
+      snSupportHC: 18,
+      snTrainingHC: 12,
+      snNestingHC: 10,
+      snSupportFixed: "yes",
+      snShiftLength: 8.5,
+      snShrinkage: 30,
+      snBuffer: 10,
+      snHandover: 15,
+
+      suTotalSeats: 120,
+      suUsedSeats: 96,
+      suBlockedSeats: 12,
+      suSupportSeats: 18,
+      suIdleSeatHours: 132,
+      suOverlapWaste: 74,
+      suDedicatedWaste: 41,
+      suShiftLength: 8.5,
+      suShiftMix: "3 Wave Model",
+
+      soTotalSeats: 120,
+      soBlockedSeats: 12,
+      soSupportSeats: 18,
+      soGoal: "balanced",
+      soShiftLength: 8.5,
+      soHandover: 15,
+      soShrinkage: 30,
+      soRequiredHC: 178
+    };
+
+    let latestData = {
+      summary: [],
+      hoopRows: [],
+      scenarioRows: [],
+      wasteRows: [],
+      recommendation: "",
+      plannerInsight: ""
+    };
+
+    function $(id){ return document.getElementById(id); }
+
+    function num(id){
+      const v = parseFloat($(id).value);
+      return Number.isFinite(v) ? v : 0;
     }
 
-    toggleModeSections();
+    function val(id){
+      return $(id).value;
+    }
+
+    function round(n, d = 1){
+      const p = Math.pow(10, d);
+      return Math.round((n + Number.EPSILON) * p) / p;
+    }
+
+    function fmt(n, d = 1){
+      return round(n, d).toLocaleString(undefined, {minimumFractionDigits:d, maximumFractionDigits:d});
+    }
+
+    function fmt0(n){
+      return Math.round(n).toLocaleString();
+    }
+
+    function setDefaults(){
+      Object.entries(defaultData).forEach(([k,v])=>{
+        if($(k)) $(k).value = v;
+      });
+      toggleModeSections();
+      calculatePlanner();
+    }
+
+    function reuseEfficiency(style){
+      if(style === "standard") return 0.70;
+      if(style === "high") return 0.77;
+      return 0.85;
+    }
+
+    function riskFromUtilization(utilPct){
+      if(utilPct < 150) return "Low";
+      if(utilPct < 190) return "Medium";
+      return "High";
+    }
+
+    function statusClass(risk){
+      if(risk === "Low") return "status-safe";
+      if(risk === "Medium") return "status-risk";
+      return "status-high";
+    }
+
+    function practicalReuse(hoopHours, shiftLength, handoverMin, style){
+      const effBlock = shiftLength + (handoverMin / 60);
+      const theoretical = effBlock > 0 ? hoopHours / effBlock : 0;
+      return theoretical * reuseEfficiency(style);
+    }
+
+    function calcHCCapacityFromSeats({
+      totalSeats, blockedSeats, supportSeats, shiftLength, shrinkagePct, bufferPct,
+      handoverMin, hoopHours, hoopDays, workingDays, style, requiredProductiveHC
+    }){
+      const usableSeats = Math.max(totalSeats - blockedSeats - supportSeats, 0);
+      const reuse = practicalReuse(hoopHours, shiftLength, handoverMin, style);
+      const rosterHC = usableSeats * reuse * (hoopDays / Math.max(workingDays, 1));
+      const productiveHC = rosterHC * (1 - shrinkagePct / 100);
+      const seatUtilTurnPct = reuse * 100;
+      const hcGap = productiveHC - requiredProductiveHC;
+
+      return {
+        usableSeats,
+        concurrentSeats: usableSeats,
+        reuse,
+        rosterHC,
+        productiveHC,
+        seatUtilTurnPct,
+        hcGap
+      };
+    }
+
+    function calcSeatsNeededFromHC({
+      requiredProductiveHC, supportHC, trainingHC, nestingHC, supportFixed,
+      shiftLength, shrinkagePct, bufferPct, handoverMin, hoopHours, hoopDays, workingDays, style
+    }){
+      const requiredRosterHC = (requiredProductiveHC / Math.max(1 - shrinkagePct / 100, 0.0001)) * (1 + bufferPct / 100);
+      const reuse = practicalReuse(hoopHours, shiftLength, handoverMin, style);
+      const productionSeatsNeeded = requiredRosterHC / Math.max(reuse * (hoopDays / Math.max(workingDays,1)), 0.0001);
+      const fixedSupportSeats = supportFixed === "yes" ? supportHC : 0;
+      const flexSeats = supportFixed === "yes" ? 0 : supportHC * 0.35;
+      const trainingSeats = trainingHC * 0.5;
+      const nestingSeats = nestingHC * 0.6;
+      const totalSeatsNeeded = productionSeatsNeeded + fixedSupportSeats + flexSeats + trainingSeats + nestingSeats;
+
+      return {
+        requiredRosterHC,
+        productionSeatsNeeded,
+        totalSeatsNeeded,
+        supportSeatLoad: fixedSupportSeats + flexSeats,
+        reuse
+      };
+    }
+
+    function calcSeatUtilization({
+      totalSeats, usedSeats, blockedSeats, supportSeats, idleSeatHours, overlapWaste, dedicatedWaste,
+      shiftLength, shiftMix, hoopHours
+    }){
+      const usableSeats = Math.max(totalSeats - blockedSeats - supportSeats, 0);
+      const seatUtilPct = usableSeats > 0 ? (usedSeats / usableSeats) * 100 : 0;
+      const totalWaste = idleSeatHours + overlapWaste + dedicatedWaste;
+      const seatGap = usableSeats - usedSeats;
+
+      return {
+        usableSeats,
+        usedSeats,
+        seatUtilPct,
+        seatGap,
+        idleSeatHours,
+        overlapWaste,
+        dedicatedWaste,
+        totalWaste
+      };
+    }
+
+    function buildShiftScenarios({
+      totalSeats, blockedSeats, supportSeats, shiftLength, handoverMin, shrinkagePct,
+      hoopHours, hoopDays, workingDays
+    }){
+      const usableSeats = Math.max(totalSeats - blockedSeats - supportSeats, 0);
+
+      const scenarios = [
+        {name:"Standard", style:"standard", mix:"2 × 9h"},
+        {name:"High Utilization", style:"high", mix:"9h + 9h + 8h"},
+        {name:"Max Utilization", style:"max", mix:"3 tight waves"}
+      ];
+
+      return scenarios.map(s=>{
+        const reuse = practicalReuse(hoopHours, shiftLength, handoverMin, s.style);
+        const rosterHC = usableSeats * reuse * (hoopDays / Math.max(workingDays,1));
+        const productiveHC = rosterHC * (1 - shrinkagePct / 100);
+        const usedProductionSeats = Math.min(usableSeats, Math.round(usableSeats * (0.93 + (s.style === "standard" ? 0.00 : s.style === "high" ? 0.04 : 0.06))));
+        const totalSeatsUsed = usedProductionSeats + supportSeats;
+        const idleSeatHours = Math.max((usableSeats - usedProductionSeats) * shiftLength * 1.4, s.style === "standard" ? 210 : s.style === "high" ? 132 : 88);
+        const utilPct = reuse * 100;
+        const risk = riskFromUtilization(utilPct);
+        const overlapWaste = s.style === "standard" ? 28 : s.style === "high" ? 74 : 120;
+
+        return {
+          scenario: s.name,
+          shiftMix: s.mix,
+          style: s.style,
+          utilPct,
+          usedProductionSeats,
+          supportSeats,
+          totalSeatsUsed,
+          idleSeatHours,
+          overlapWaste,
+          risk,
+          rosterHC,
+          productiveHC,
+          reuse
+        };
+      });
+    }
+
+    function getCurrentModeData(){
+      const style = val("optimizationStyle");
+      const hoopHours = num("hoopHours");
+      const hoopDays = num("hoopDays");
+      const workingDays = num("workingDays");
+      const mode = val("planningMode");
+
+      if(mode === "hc-capacity"){
+        return {
+          mode,
+          style,
+          hoopHours,
+          hoopDays,
+          workingDays,
+          ...calcHCCapacityFromSeats({
+            totalSeats: num("hcTotalSeats"),
+            blockedSeats: num("hcBlockedSeats"),
+            supportSeats: val("hcReusableSupport") === "yes" ? 0 : num("hcSupportSeats"),
+            shiftLength: parseFloat(val("hcShiftLength")),
+            shrinkagePct: num("hcShrinkage"),
+            bufferPct: num("hcBuffer"),
+            handoverMin: num("hcHandover"),
+            hoopHours,
+            hoopDays,
+            workingDays,
+            style,
+            requiredProductiveHC: num("hcRequiredProductiveHC")
+          })
+        };
+      }
+
+      if(mode === "seats-needed"){
+        return {
+          mode,
+          style,
+          hoopHours,
+          hoopDays,
+          workingDays,
+          ...calcSeatsNeededFromHC({
+            requiredProductiveHC: num("snAgentHC"),
+            supportHC: num("snSupportHC"),
+            trainingHC: num("snTrainingHC"),
+            nestingHC: num("snNestingHC"),
+            supportFixed: val("snSupportFixed"),
+            shiftLength: parseFloat(val("snShiftLength")),
+            shrinkagePct: num("snShrinkage"),
+            bufferPct: num("snBuffer"),
+            handoverMin: num("snHandover"),
+            hoopHours,
+            hoopDays,
+            workingDays,
+            style
+          })
+        };
+      }
+
+      if(mode === "seat-utilization"){
+        return {
+          mode,
+          style,
+          hoopHours,
+          hoopDays,
+          workingDays,
+          ...calcSeatUtilization({
+            totalSeats: num("suTotalSeats"),
+            usedSeats: num("suUsedSeats"),
+            blockedSeats: num("suBlockedSeats"),
+            supportSeats: num("suSupportSeats"),
+            idleSeatHours: num("suIdleSeatHours"),
+            overlapWaste: num("suOverlapWaste"),
+            dedicatedWaste: num("suDedicatedWaste"),
+            shiftLength: parseFloat(val("suShiftLength")),
+            shiftMix: val("suShiftMix"),
+            hoopHours
+          })
+        };
+      }
+
+      return {
+        mode,
+        style,
+        hoopHours,
+        hoopDays,
+        workingDays,
+        scenarios: buildShiftScenarios({
+          totalSeats: num("soTotalSeats"),
+          blockedSeats: num("soBlockedSeats"),
+          supportSeats: num("soSupportSeats"),
+          shiftLength: parseFloat(val("soShiftLength")),
+          handoverMin: num("soHandover"),
+          shrinkagePct: num("soShrinkage"),
+          hoopHours,
+          hoopDays,
+          workingDays
+        }),
+        requiredHC: num("soRequiredHC"),
+        goal: val("soGoal")
+      };
+    }
+
+    function buildHoopRows(base){
+      const hoopScenarios = [9,12,16,18,24];
+
+      if(base.mode === "seat-utilization"){
+        const usableSeats = base.usableSeats;
+        return hoopScenarios.map(h=>{
+          const reuse = practicalReuse(h, parseFloat(val("suShiftLength")), 15, val("optimizationStyle"));
+          const rosterHC = usableSeats * reuse * (num("hoopDays") / Math.max(num("workingDays"),1));
+          const productiveHC = rosterHC * 0.70;
+          return {
+            scenario:`${h}×${num("hoopDays")}`,
+            hoopHours:h,
+            hoopDays:num("hoopDays"),
+            usableSeats,
+            reuse,
+            rosterHC,
+            productiveHC,
+            comments: h <= 12 ? "Lower seat turn" : h <= 18 ? "Balanced reuse" : "Maximum supportable HC"
+          };
+        });
+      }
+
+      let totalSeats = 120, blocked = 12, support = 18, shiftLength = 8.5, shrink = 30, handover = 15;
+      if(base.mode === "hc-capacity"){
+        totalSeats = num("hcTotalSeats");
+        blocked = num("hcBlockedSeats");
+        support = val("hcReusableSupport") === "yes" ? 0 : num("hcSupportSeats");
+        shiftLength = parseFloat(val("hcShiftLength"));
+        shrink = num("hcShrinkage");
+        handover = num("hcHandover");
+      } else if(base.mode === "seats-needed"){
+        totalSeats = Math.ceil(base.totalSeatsNeeded + 8);
+        blocked = 0;
+        support = 0;
+        shiftLength = parseFloat(val("snShiftLength"));
+        shrink = num("snShrinkage");
+        handover = num("snHandover");
+      } else {
+        totalSeats = num("soTotalSeats");
+        blocked = num("soBlockedSeats");
+        support = num("soSupportSeats");
+        shiftLength = parseFloat(val("soShiftLength"));
+        shrink = num("soShrinkage");
+        handover = num("soHandover");
+      }
+
+      return hoopScenarios.map(h=>{
+        const calc = calcHCCapacityFromSeats({
+          totalSeats,
+          blockedSeats: blocked,
+          supportSeats: support,
+          shiftLength,
+          shrinkagePct: shrink,
+          bufferPct: 0,
+          handoverMin: handover,
+          hoopHours: h,
+          hoopDays: num("hoopDays"),
+          workingDays: Math.max(num("workingDays"),1),
+          style: val("optimizationStyle"),
+          requiredProductiveHC: 0
+        });
+        return {
+          scenario:`${h}×${num("hoopDays")}`,
+          hoopHours:h,
+          hoopDays:num("hoopDays"),
+          usableSeats:calc.usableSeats,
+          reuse:calc.reuse,
+          rosterHC:calc.rosterHC,
+          productiveHC:calc.productiveHC,
+          comments: h <= 12 ? "Good for moderate reuse" : h <= 18 ? "Balanced long-hour scenario" : "Maximum supportable HC"
+        };
+      });
+    }
+
+    function buildScenarioRows(base){
+      if(base.mode === "shift-optimization"){
+        return base.scenarios;
+      }
+
+      const totalSeats = base.mode === "seat-utilization" ? num("suTotalSeats") : (base.mode === "seats-needed" ? Math.ceil(base.totalSeatsNeeded + 8) : num("hcTotalSeats"));
+      const blockedSeats = base.mode === "seat-utilization" ? num("suBlockedSeats") : (base.mode === "hc-capacity" ? num("hcBlockedSeats") : 12);
+      const supportSeats = base.mode === "seat-utilization" ? num("suSupportSeats") : (base.mode === "hc-capacity" ? num("hcSupportSeats") : 18);
+      const shiftLength = base.mode === "seat-utilization" ? parseFloat(val("suShiftLength")) : (base.mode === "hc-capacity" ? parseFloat(val("hcShiftLength")) : parseFloat(val("snShiftLength")));
+      const shrink = base.mode === "seat-utilization" ? 30 : (base.mode === "hc-capacity" ? num("hcShrinkage") : num("snShrinkage"));
+      const handover = base.mode === "seat-utilization" ? 15 : (base.mode === "hc-capacity" ? num("hcHandover") : num("snHandover"));
+
+      return buildShiftScenarios({
+        totalSeats,
+        blockedSeats,
+        supportSeats,
+        shiftLength,
+        handoverMin: handover,
+        shrinkagePct: shrink,
+        hoopHours:num("hoopHours"),
+        hoopDays:num("hoopDays"),
+        workingDays:num("workingDays")
+      });
+    }
+
+    function buildWaste(base, scenarioRows){
+      if(base.mode === "seat-utilization"){
+        return [
+          {title:"Idle Seat Waste", value:`${fmt0(base.idleSeatHours)}h`, note:"Unused but available seat capacity"},
+          {title:"Overlap Waste", value:`${fmt0(base.overlapWaste)}h`, note:"Seat time lost in overlap inefficiency"},
+          {title:"Dedicated Seat Waste", value:`${fmt0(base.dedicatedWaste)}h`, note:"Support or reserved seat hours not used"},
+          {title:"Total Waste", value:`${fmt0(base.totalWaste)}h`, note:"Combined seat waste measure"}
+        ];
+      }
+
+      const selected = scenarioRows.find(x=>x.scenario === "High Utilization") || scenarioRows[0];
+      const dedicated = Math.max(selected.supportSeats * 2.3, 18);
+      const overlap = round(selected.overlapWaste || (selected.utilPct > 180 ? 74 : 38),0);
+      const idle = round(selected.idleSeatHours,0);
+      const total = idle + overlap + dedicated;
+
+      return [
+        {title:"Idle Seat Waste", value:`${fmt0(idle)}h`, note:"Unused but available seat capacity"},
+        {title:"Overlap Waste", value:`${fmt0(overlap)}h`, note:"Seat time lost in overlap inefficiency"},
+        {title:"Dedicated Seat Waste", value:`${fmt0(dedicated)}h`, note:"Support or reserved seat hours not used"},
+        {title:"Total Waste", value:`${fmt0(total)}h`, note:"Combined seat waste measure"}
+      ];
+    }
+
+    function buildRecommendation(base, scenarioRows){
+      const preferred = scenarioRows.find(r=>r.scenario === "High Utilization") || scenarioRows[0];
+      const use = preferred;
+      return `
+        <strong>Recommended shift design:</strong> ${use.shiftMix}<br>
+        <strong>Suggested wave pattern:</strong> 06:00 to 15:00 | 14:00 to 23:00 | 22:00 to 06:00<br><br>
+        This setup balances seat reuse and operational risk better than the extreme model. It keeps the seat turn factor strong while reducing overlap distortion and maintaining more stable floor control.<br><br>
+        <strong>Why this is recommended:</strong><br>
+        • Seat utilization is ${fmt(use.utilPct,0)}%<br>
+        • Productive HC support is ${fmt(use.productiveHC,0)}<br>
+        • Idle seat hours are ${fmt(use.idleSeatHours,0)}h<br>
+        • Risk level is <strong>${use.risk}</strong>
+      `;
+    }
+
+    function buildInsight(base){
+      if(base.mode === "hc-capacity"){
+        return `This view answers the main operational question: how much HC can the current seat base support? With ${fmt0(base.usableSeats)} usable production seats and a practical reuse factor of ${fmt(base.reuse,2)}x, the setup can support about ${fmt(base.rosterHC,0)} roster HC and ${fmt(base.productiveHC,0)} productive HC after shrinkage.`;
+      }
+      if(base.mode === "seats-needed"){
+        return `This view converts HC need back into physical floor requirement. To support about ${fmt(base.requiredRosterHC,0)} roster HC, the planner estimates ${fmt(base.productionSeatsNeeded,0)} production seats and about ${fmt(base.totalSeatsNeeded,0)} total seats after support, training, and nesting seat treatment.`;
+      }
+      if(base.mode === "seat-utilization"){
+        return `This view focuses on waste and usage pressure. Current seat utilization is ${fmt(base.seatUtilPct,0)}% against usable production seats. The main waste drivers are idle seat hours, overlap waste, and dedicated seat waste, which together total ${fmt(base.totalWaste,0)} hours.`;
+      }
+      return `This view compares different wave strategies. The recommended scenario is selected by balancing productive HC support, seat utilization, and risk. High utilization usually gives the best trade-off between better seat turn and manageable overlap.`;
+    }
+
+    function renderKPIs(base, scenarioRows){
+      const grid = $("kpiGrid");
+      let items = [];
+
+      if(base.mode === "hc-capacity"){
+        items = [
+          ["Usable Production Seats", fmt0(base.usableSeats), "Total seats minus blocked seats and fixed support seats"],
+          ["Concurrent Seat Capacity", fmt0(base.concurrentSeats), "Seats available for direct production seating"],
+          ["Roster HC Supported", fmt0(base.rosterHC), "Based on HOOP, working days, and seat reuse logic"],
+          ["Productive HC Supported", fmt0(base.productiveHC), "After applying shrinkage adjustment"],
+          ["Seat Reuse Factor", `${fmt(base.reuse,2)}x`, "Practical reuse after handover and efficiency"],
+          ["Seat Turn Utilization %", `${fmt(base.seatUtilTurnPct,0)}%`, "Reuse-based seat leverage, not concurrent physical occupancy"],
+          ["Recommended Shift Mix", "9h + 9h + 8h", "Balanced seat reuse without extreme overlap"],
+          ["HC Gap / Surplus", fmt0(base.hcGap), "Positive means surplus support, negative means gap"]
+        ];
+      } else if(base.mode === "seats-needed"){
+        items = [
+          ["Required Roster HC", fmt0(base.requiredRosterHC), "Productive HC converted back to roster HC"],
+          ["Production Seats Needed", fmt0(base.productionSeatsNeeded), "Seats needed for production-only coverage"],
+          ["Total Seats Needed", fmt0(base.totalSeatsNeeded), "Includes support, training, and nesting seat treatment"],
+          ["Support Seat Load", fmt0(base.supportSeatLoad), "Fixed or flexible support seat component"],
+          ["Seat Reuse Factor", `${fmt(base.reuse,2)}x`, "Practical seat turn assumption"],
+          ["Planning Outcome", base.totalSeatsNeeded <= 120 ? "Within Range" : "Expansion Needed", "Comparison against typical current seat base"],
+          ["Recommended Shift Mix", "9h + 9h + 8h", "Best for scalable reuse"],
+          ["Indicative Seat Gap", fmt0(120 - base.totalSeatsNeeded), "Positive means spare seats, negative means shortage"]
+        ];
+      } else if(base.mode === "seat-utilization"){
+        items = [
+          ["Usable Production Seats", fmt0(base.usableSeats), "Seats after blocked and support seats"],
+          ["Currently Used Seats", fmt0(base.usedSeats), "Production seats actively in use"],
+          ["Seat Utilization %", `${fmt(base.seatUtilPct,0)}%`, "Used seats divided by usable production seats"],
+          ["Seat Gap / Surplus", fmt0(base.seatGap), "Positive means unused seats remain"],
+          ["Idle Seat Hours", `${fmt0(base.idleSeatHours)}h`, "Unused seat time"],
+          ["Overlap Waste", `${fmt0(base.overlapWaste)}h`, "Seat time lost to overlap inefficiency"],
+          ["Dedicated Seat Waste", `${fmt0(base.dedicatedWaste)}h`, "Reserved/support waste"],
+          ["Total Waste", `${fmt0(base.totalWaste)}h`, "Combined waste view"]
+        ];
+      } else {
+        const top = scenarioRows.find(x=>x.scenario==="High Utilization") || scenarioRows[0];
+        items = [
+          ["Usable Production Seats", fmt0(Math.max(num("soTotalSeats") - num("soBlockedSeats") - num("soSupportSeats"),0)), "Production seat base"],
+          ["Recommended Scenario", top.scenario, "Best balance between risk and seat turn"],
+          ["Seat Reuse Factor", `${fmt(top.reuse,2)}x`, "Practical reuse under recommended design"],
+          ["Productive HC Supported", fmt0(top.productiveHC), "Supportable productive HC in recommended mix"],
+          ["Seat Utilization %", `${fmt(top.utilPct,0)}%`, "Reuse-based seat leverage"],
+          ["Idle Seat Hours", `${fmt0(top.idleSeatHours)}h`, "Unused seat hours in recommended scenario"],
+          ["Risk Level", top.risk, "Operational risk of overlap and tight waves"],
+          ["HC Gap / Surplus", fmt0(top.productiveHC - base.requiredHC), "Positive means supportable surplus"]
+        ];
+      }
+
+      grid.innerHTML = items.map(([title,value,note])=>`
+        <div class="kpi-card">
+          <div class="kpi-title">${title}</div>
+          <div class="kpi-value">${value}</div>
+          <div class="kpi-note">${note}</div>
+        </div>
+      `).join("");
+
+      latestData.summary = items.map(([title,value,note])=>({Metric:title, Value:value, Note:note}));
+    }
+
+    function renderHoopTable(rows){
+      $("hoopTableBody").innerHTML = rows.map(r=>`
+        <tr>
+          <td>${r.scenario}</td>
+          <td>${r.hoopHours}</td>
+          <td>${r.hoopDays}</td>
+          <td>${fmt0(r.usableSeats)}</td>
+          <td>${fmt(r.reuse,2)}x</td>
+          <td>${fmt0(r.rosterHC)}</td>
+          <td>${fmt0(r.productiveHC)}</td>
+          <td>${r.comments}</td>
+        </tr>
+      `).join("");
+      latestData.hoopRows = rows.map(r=>({
+        Scenario:r.scenario,
+        HOOP_Hours:r.hoopHours,
+        HOOP_Days:r.hoopDays,
+        Usable_Seats:round(r.usableSeats,0),
+        Reuse_Factor:round(r.reuse,2),
+        Roster_HC_Supported:round(r.rosterHC,1),
+        Productive_HC_Supported:round(r.productiveHC,1),
+        Comments:r.comments
+      }));
+    }
+
+    function renderScenarioTable(rows){
+      $("scenarioTableBody").innerHTML = rows.map(r=>`
+        <tr>
+          <td>${r.scenario}</td>
+          <td>${r.shiftMix}</td>
+          <td>${fmt(r.utilPct,0)}%</td>
+          <td>${fmt0(r.usedProductionSeats)}</td>
+          <td>${fmt0(r.supportSeats)}</td>
+          <td>${fmt0(r.totalSeatsUsed)}</td>
+          <td>${fmt0(r.idleSeatHours)}h</td>
+          <td class="${statusClass(r.risk)}">${r.risk}</td>
+        </tr>
+      `).join("");
+      latestData.scenarioRows = rows.map(r=>({
+        Scenario:r.scenario,
+        Shift_Mix:r.shiftMix,
+        Seat_Utilization_Pct:round(r.utilPct,1),
+        Used_Production_Seats:round(r.usedProductionSeats,0),
+        Support_Seats:round(r.supportSeats,0),
+        Total_Seats_Used:round(r.totalSeatsUsed,0),
+        Idle_Seat_Hours:round(r.idleSeatHours,1),
+        Risk_Level:r.risk
+      }));
+    }
+
+    function renderWaste(wasteItems){
+      $("wasteGrid").innerHTML = wasteItems.map(w=>`
+        <div class="kpi-card">
+          <div class="kpi-title">${w.title}</div>
+          <div class="kpi-value">${w.value}</div>
+          <div class="kpi-note">${w.note}</div>
+        </div>
+      `).join("");
+      latestData.wasteRows = wasteItems.map(w=>({Metric:w.title, Value:w.value, Note:w.note}));
+    }
+
+    function renderText(recommendation, insight){
+      $("recommendationBox").innerHTML = recommendation;
+      $("plannerInsight").textContent = insight;
+      latestData.recommendation = recommendation.replace(/<br>/g,"\n").replace(/<strong>|<\/strong>/g,"");
+      latestData.plannerInsight = insight;
+    }
+
+    function makeBarChart(containerId, labels, series){
+      const allValues = series.flatMap(s=>s.values);
+      const maxVal = Math.max(...allValues, 1);
+
+      const groups = labels.map((label, i)=>{
+        const bars = series.map(s=>{
+          const height = Math.max(8, (s.values[i] / maxVal) * 190);
+          return `<div class="bar ${s.color}" style="height:${height}px"></div>`;
+        }).join("");
+        return `<div class="bar-group">${bars}</div>`;
+      }).join("");
+
+      const x = labels.map(l=>`<span>${l}</span>`).join("");
+      const y = [maxVal, maxVal*0.75, maxVal*0.5, maxVal*0.25, 0]
+        .map(v=>`<span>${fmt0(v)}</span>`).join("");
+
+      const legend = series.map(s=>`
+        <div class="legend-item"><span class="swatch" style="background:${colorHex(s.color)}"></span>${s.name}</div>
+      `).join("");
+
+      $(containerId).innerHTML = `
+        <div class="fake-chart">
+          <div class="y-axis">${y}</div>
+          <div class="bars">${groups}</div>
+          <div class="x-axis">${x}</div>
+        </div>
+        <div class="legend">${legend}</div>
+      `;
+    }
+
+    function colorHex(name){
+      const map = {
+        blue:"#38bdf8",
+        purple:"#8b5cf6",
+        green:"#22c55e",
+        orange:"#f59e0b",
+        red:"#ef4444",
+        yellow:"#fbbf24"
+      };
+      return map[name] || "#38bdf8";
+    }
+
+    function renderCharts(hoopRows, scenarioRows, wasteItems){
+      makeBarChart("chartHoop",
+        hoopRows.map(r=>r.scenario),
+        [
+          {name:"Roster HC Supported", color:"blue", values:hoopRows.map(r=>r.rosterHC)},
+          {name:"Productive HC Supported", color:"purple", values:hoopRows.map(r=>r.productiveHC)}
+        ]
+      );
+
+      makeBarChart("chartScenario",
+        scenarioRows.map(r=>r.scenario.replace(" Utilization"," Util.")),
+        [
+          {name:"Seat Utilization %", color:"blue", values:scenarioRows.map(r=>r.utilPct)},
+          {name:"Seat Gap / Surplus", color:"yellow", values:scenarioRows.map(r=>Math.abs((r.usedProductionSeats + r.supportSeats) - Math.max(r.totalSeatsUsed,1)))}
+        ]
+      );
+
+      makeBarChart("chartWaste",
+        ["Used","Idle","Overlap","Dedicated"],
+        [
+          {
+            name:"Seat Hours",
+            color:"green",
+            values:[
+              Math.max(480, wasteItems[0] ? parseFloat(String(wasteItems[3].value).replace(/[^\d.-]/g,'')) + 400 : 500),
+              parseFloat(String(wasteItems[0].value).replace(/[^\d.-]/g,'')) || 0,
+              parseFloat(String(wasteItems[1].value).replace(/[^\d.-]/g,'')) || 0,
+              parseFloat(String(wasteItems[2].value).replace(/[^\d.-]/g,'')) || 0
+            ]
+          }
+        ]
+      );
+
+      const waveSource = scenarioRows.find(r=>r.scenario==="High Utilization") || scenarioRows[0];
+      const totalLoad = waveSource.productiveHC || 180;
+      const wave1 = totalLoad * 0.38;
+      const wave2 = totalLoad * 0.35;
+      const wave3 = totalLoad * 0.27;
+
+      makeBarChart("chartWaves",
+        ["Wave 1","Wave 2","Wave 3"],
+        [
+          {name:"Wave HC Load", color:"blue", values:[wave1,wave2,wave3]}
+        ]
+      );
+    }
+
+    function calculatePlanner(){
+      const base = getCurrentModeData();
+      const hoopRows = buildHoopRows(base);
+      const scenarioRows = buildScenarioRows(base);
+      const wasteItems = buildWaste(base, scenarioRows);
+      const recommendation = buildRecommendation(base, scenarioRows);
+      const insight = buildInsight(base);
+
+      renderKPIs(base, scenarioRows);
+      renderHoopTable(hoopRows);
+      renderScenarioTable(scenarioRows);
+      renderWaste(wasteItems);
+      renderText(recommendation, insight);
+      renderCharts(hoopRows, scenarioRows, wasteItems);
+    }
+
+    function toggleModeSections(){
+      const mode = $("planningMode").value;
+
+      $("mode-hc-capacity").classList.add("hidden");
+      $("mode-seats-needed").classList.add("hidden");
+      $("mode-seat-utilization").classList.add("hidden");
+      $("mode-shift-optimization").classList.add("hidden");
+
+      if(mode === "hc-capacity"){
+        $("mode-hc-capacity").classList.remove("hidden");
+      } else if(mode === "seats-needed"){
+        $("mode-seats-needed").classList.remove("hidden");
+      } else if(mode === "seat-utilization"){
+        $("mode-seat-utilization").classList.remove("hidden");
+      } else if(mode === "shift-optimization"){
+        $("mode-shift-optimization").classList.remove("hidden");
+      }
+
+      calculatePlanner();
+    }
+
+    function csvFromRows(rows){
+      if(!rows || !rows.length) return "No data";
+      const headers = Object.keys(rows[0]);
+      const esc = v => {
+        const s = String(v ?? "");
+        return /[",\n]/.test(s) ? `"${s.replace(/"/g,'""')}"` : s;
+      };
+      return [headers.join(","), ...rows.map(r=>headers.map(h=>esc(r[h])).join(","))].join("\n");
+    }
+
+    function downloadCSV(filename, rows){
+      const blob = new Blob([csvFromRows(rows)], {type:"text/csv;charset=utf-8;"});
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = filename;
+      a.click();
+      URL.revokeObjectURL(a.href);
+    }
+
+    function downloadText(filename, text){
+      const blob = new Blob([text], {type:"text/plain;charset=utf-8;"});
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = filename;
+      a.click();
+      URL.revokeObjectURL(a.href);
+    }
+
+    document.querySelectorAll("input, select").forEach(el=>{
+      el.addEventListener("input", calculatePlanner);
+      el.addEventListener("change", calculatePlanner);
+    });
+
+    $("planningMode").addEventListener("change", toggleModeSections);
+    $("calcBtn").addEventListener("click", calculatePlanner);
+    $("loadDummyBtn").addEventListener("click", setDefaults);
+    $("resetBtn").addEventListener("click", setDefaults);
+
+    $("downloadHoopBtn").addEventListener("click", ()=>downloadCSV("hoop_capacity_comparison.csv", latestData.hoopRows));
+    $("downloadScenarioBtn").addEventListener("click", ()=>downloadCSV("scenario_comparison.csv", latestData.scenarioRows));
+    $("downloadWasteBtn").addEventListener("click", ()=>downloadCSV("seat_waste_view.csv", latestData.wasteRows));
+    $("downloadRecommendationBtn").addEventListener("click", ()=>downloadText("shift_recommendation.txt", latestData.recommendation));
+    $("downloadSummaryBtn").addEventListener("click", ()=>downloadCSV("seat_planner_summary.csv", latestData.summary));
+    $("downloadAllBtn").addEventListener("click", ()=>{
+      const full = [
+        "SUMMARY",
+        csvFromRows(latestData.summary),
+        "",
+        "HOOP COMPARISON",
+        csvFromRows(latestData.hoopRows),
+        "",
+        "SCENARIO COMPARISON",
+        csvFromRows(latestData.scenarioRows),
+        "",
+        "WASTE VIEW",
+        csvFromRows(latestData.wasteRows),
+        "",
+        "RECOMMENDATION",
+        latestData.recommendation,
+        "",
+        "PLANNER INSIGHT",
+        latestData.plannerInsight
+      ].join("\n");
+      downloadText("full_seat_planning_report.txt", full);
+    });
+
+    $("downloadHoopChartBtn").addEventListener("click", ()=>downloadCSV("chart_hoop_capacity_data.csv", latestData.hoopRows));
+    $("downloadScenarioChartBtn").addEventListener("click", ()=>downloadCSV("chart_scenario_utilization_data.csv", latestData.scenarioRows));
+    $("downloadWasteChartBtn").addEventListener("click", ()=>downloadCSV("chart_waste_data.csv", latestData.wasteRows));
+    $("downloadWaveChartBtn").addEventListener("click", ()=>downloadCSV("chart_wave_data.csv", latestData.scenarioRows));
+
+    setDefaults();
   </script>
 </body>
 </html>
