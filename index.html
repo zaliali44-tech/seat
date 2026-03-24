@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+\<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Seat Requirement & Utilization Planner v2.1 Final</title>
+  <title>Seat Requirement & Utilization Planner</title>
   <style>
     :root{
       --bg:#031126;
@@ -33,10 +33,16 @@
       font-family:Inter, Segoe UI, Arial, sans-serif;
     }
 
-    .wrap{max-width:1560px;margin:0 auto;padding:16px 14px 42px}
+    .wrap{
+      width:100%;
+      max-width:none;
+      margin:0 auto;
+      padding:16px 16px 42px;
+    }
 
     .hero,
     .section{
+      width:100%;
       position:relative;
       overflow:visible;
       border:1px solid rgba(80,160,255,.20);
@@ -79,7 +85,6 @@
       color:var(--muted);
       line-height:1.7;
       font-size:15px;
-      max-width:920px;
     }
     .hero-badges{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
     .badge{
@@ -654,15 +659,16 @@
         <div>
           <h1>Seat Requirement & Utilization Planner</h1>
           <p class="sub">
-            A clearer, stronger planning tool for seat-based WFM decisions. It separates
-            <strong>base weekly seat capacity</strong>, <strong>reuse-adjusted capacity</strong>,
-            and <strong>productive HC after shrinkage</strong>, while Version 2.1 keeps the core planner logic intact and upgrades the shift mix comparison to stricter seat-hour logic.
+            A decision tool for seat-based WFM planning. It helps you evaluate
+            <strong>weekly seat capacity</strong>, <strong>supportable HC</strong>,
+            <strong>seat reuse</strong>, and <strong>shift mix effectiveness</strong>
+            through clearer calculations, scenario comparison, and planning outputs.
           </p>
           <div class="hero-badges">
             <div class="badge">AI-styled planning canvas</div>
             <div class="badge">Clear mode-based logic</div>
             <div class="badge">Scenario simulator</div>
-            <div class="badge">Version 2.1 shift logic</div>
+            <div class="badge">Shift mix comparison</div>
             <div class="badge">Formula glossary</div>
           </div>
         </div>
@@ -671,7 +677,7 @@
           <div class="eyebrow">Planner Logic Preview</div>
           <h2>Same seats, different HOOP, different HC capacity.</h2>
           <p>
-            The selected scenario is highlighted, the row drilldown explains the logic, and the shift mix comparison now uses generated seat-hours, overlap waste, useful capacity, and uncovered demand.
+            The selected scenario is highlighted, the row drilldown explains the logic, and the comparison views help you understand capacity, coverage, and seat utilization more clearly.
           </p>
 
           <div class="mini-preview">
@@ -816,7 +822,7 @@
         <div class="field">
           <label>
             Average Shift Length
-            <span class="info-tip" data-tip="Used in both the core reuse model and the Version 2.1 shift-mix model. In Version 2.1, productive hours per day are mapped more realistically by shift length without changing the core HOOP simulator math.">?</span>
+            <span class="info-tip" data-tip="Used in both the core reuse model and the stricter shift-mix model. Productive hours per day are mapped more realistically by shift length without changing the core HOOP simulator math.">?</span>
           </label>
           <select id="shiftLength">
             <option>8</option>
@@ -1025,7 +1031,7 @@
       <div class="section-head">
         <div>
           <h3>Scenario Comparison</h3>
-          <p>Version 2.1 uses stricter WFM seat-wave logic: generated seat-hours, overlap waste, net useful seat-hours, productive HC support, uncovered demand, and risk.</p>
+          <p>This comparison uses generated seat-hours, overlap waste, net useful seat-hours, productive HC support, uncovered demand, and risk to help explain shift mix behavior more clearly.</p>
         </div>
       </div>
 
@@ -1162,8 +1168,8 @@ Seat Reuse Multiplier = Theoretical Seat Turns × Optimization Efficiency, if Th
         </div>
 
         <div class="glossary-item">
-          <h4>Productive Hours / Day (Version 2.1) <span class="info-tip" data-tip="Used only in the stricter shift-mix comparison. Mapping: 8h→7.0, 8.5h→7.5, 9h→8.0, 9.5h→8.0, 10h→8.5.">?</span></h4>
-          <p>More realistic productive-hour assumption used only in Version 2.1 shift mix comparison.</p>
+          <h4>Productive Hours / Day <span class="info-tip" data-tip="Used only in the stricter shift-mix comparison. Mapping: 8h→7.0, 8.5h→7.5, 9h→8.0, 9.5h→8.0, 10h→8.5.">?</span></h4>
+          <p>More realistic productive-hour assumption used only in the shift mix comparison.</p>
           <span class="formula-code">8 → 7.0 | 8.5 → 7.5 | 9 → 8.0 | 9.5 → 8.0 | 10 → 8.5</span>
         </div>
 
@@ -1217,7 +1223,7 @@ Seat Reuse Multiplier = Theoretical Seat Turns × Optimization Efficiency, if Th
       </div>
 
       <div class="footer-note">
-        Version 2.1 keeps the core HOOP simulator formulas stable, fixes the hidden support seat deduction issue, avoids reuse penalties when theoretical turns are 1.0 or lower, and tightens the shift comparison logic so the recommendation is more defensible.
+        This planner separates clean weekly seat support, reuse-adjusted capacity, productive HC capacity, and shift comparison outputs so the planning logic is easier to understand and explain.
       </div>
     </section>
 
@@ -1313,7 +1319,6 @@ Seat Reuse Multiplier = Theoretical Seat Turns × Optimization Efficiency, if Th
       const theoreticalTurns = effectiveSeatBlockHours > 0 ? (hoopHours / effectiveSeatBlockHours) : 0;
       const efficiency = getEfficiency(optimizationStyle, hoopHours);
 
-      // Fix 1: do not apply efficiency penalty when theoretical turns <= 1
       const practicalReuse = theoreticalTurns <= 1
         ? theoreticalTurns
         : theoreticalTurns * efficiency;
@@ -1500,7 +1505,6 @@ Seat Reuse Multiplier = Theoretical Seat Turns × Optimization Efficiency, if Th
         const usableSeats = Math.max(0, x.totalSeats - x.blockedSeats - x.supportSeats);
         const baseWeeklyRosterHC = usableSeats * core.weeklyFactor;
 
-        // Fix 2: apply planning buffer in capacity mode as optional reserved capacity
         const adjustedWeeklyRosterHC = baseWeeklyRosterHC * core.practicalReuse * capacityBufferFactor;
         const productiveHCCapacity = adjustedWeeklyRosterHC * shrinkageFactor;
 
@@ -1892,7 +1896,6 @@ Seat Reuse Multiplier = Theoretical Seat Turns × Optimization Efficiency, if Th
         if (!el.classList.contains('mode-capacity')) {
           el.classList.toggle('input-hidden', mode !== 'need');
         } else {
-          // support seats stays visible in both modes
           el.classList.remove('input-hidden');
         }
       });
