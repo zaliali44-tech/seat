@@ -1,4 +1,4 @@
-\<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -1031,13 +1031,13 @@
       <div class="section-head">
         <div>
           <h3>Scenario Comparison</h3>
-          <p>This comparison uses generated seat-hours, overlap waste, net useful seat-hours, productive HC support, uncovered demand, and risk to help explain shift mix behavior more clearly.</p>
+          <p id="scenarioComparisonNote">This comparison uses generated seat-hours, overlap waste, net useful seat-hours, productive HC support, uncovered demand, and risk to help explain shift mix behavior more clearly.</p>
         </div>
       </div>
 
       <div class="legend">
         <div class="legend-card">
-          <div class="lt">Generated Seat Hours / Day <span class="info-tip" data-tip="Total seat-hours created by all shift waves in the scenario. Formula: Sum of Wave Seats × Productive Hours per Day.">?</span></div>
+          <div class="lt">Generated Seat Hours / Day <span class="info-tip" data-tip="Total seat-hours created by all shift waves in the scenario. Formula: Sum of Wave Seats × Shift Length.">?</span></div>
           <div class="ld">Total seat-hours created before overlap loss.</div>
         </div>
         <div class="legend-card">
@@ -1053,8 +1053,8 @@
           <div class="ld">Useful share of generated seat-hours.</div>
         </div>
         <div class="legend-card">
-          <div class="lt">Uncovered Demand Hours <span class="info-tip" data-tip="Remaining productive demand not covered by useful seat-hours in that shift mix. High uncovered demand should rank badly in recommendation logic.">?</span></div>
-          <div class="ld">Remaining productive demand gap.</div>
+          <div class="lt">Uncovered Demand Hours <span class="info-tip" data-tip="Remaining demand not covered by useful seat-hours in that shift mix.">?</span></div>
+          <div class="ld">Remaining demand gap.</div>
         </div>
       </div>
 
@@ -1168,15 +1168,15 @@ Seat Reuse Multiplier = Theoretical Seat Turns × Optimization Efficiency, if Th
         </div>
 
         <div class="glossary-item">
-          <h4>Productive Hours / Day <span class="info-tip" data-tip="Used only in the stricter shift-mix comparison. Mapping: 8h→7.0, 8.5h→7.5, 9h→8.0, 9.5h→8.0, 10h→8.5.">?</span></h4>
-          <p>More realistic productive-hour assumption used only in the shift mix comparison.</p>
-          <span class="formula-code">8 → 7.0 | 8.5 → 7.5 | 9 → 8.0 | 9.5 → 8.0 | 10 → 8.5</span>
+          <h4>Shift Hours / Day <span class="info-tip" data-tip="Used in Scenario Comparison for seat-hour generation. This uses full shift hours, not reduced productive hours.">?</span></h4>
+          <p>Full occupied shift hours used for seat-hour generation in the scenario comparison.</p>
+          <span class="formula-code">Generated Seat Hours / Day = Σ (Wave Seats × Shift Length)</span>
         </div>
 
         <div class="glossary-item">
           <h4>Generated Seat Hours / Day <span class="info-tip" data-tip="Total seat-hours created by all active shift waves.">?</span></h4>
           <p>Total seat-hours created by all active waves in a shift mix scenario.</p>
-          <span class="formula-code">Generated Seat Hours / Day = Σ (Wave Seats × Productive Hours per Day)</span>
+          <span class="formula-code">Generated Seat Hours / Day = Σ (Wave Seats × Shift Length)</span>
         </div>
 
         <div class="glossary-item">
@@ -1204,21 +1204,21 @@ Seat Reuse Multiplier = Theoretical Seat Turns × Optimization Efficiency, if Th
         </div>
 
         <div class="glossary-item">
-          <h4>Idle Seat Hours / Week <span class="info-tip" data-tip="Generated seat-hours not required by productive demand.">?</span></h4>
-          <p>Generated seat-hours that are not needed by the productive demand load.</p>
-          <span class="formula-code">Idle Seat Hours / Week = Max(0, Generated Seat Hours / Day − Daily Productive Hours Demand) × HOOP Days</span>
+          <h4>Idle Seat Hours / Week <span class="info-tip" data-tip="Generated seat-hours not required by demand.">?</span></h4>
+          <p>Generated seat-hours that are not needed by the demand load.</p>
+          <span class="formula-code">Idle Seat Hours / Week = Max(0, Generated Seat Hours / Day − Daily Demand Hours) × HOOP Days</span>
         </div>
 
         <div class="glossary-item">
-          <h4>Productive HC Supported <span class="info-tip" data-tip="How many productive agents can be supported by useful seat-hours.">?</span></h4>
-          <p>How many productive agents can be supported by the useful seat-hours from that shift mix.</p>
-          <span class="formula-code">Productive HC Supported = Weekly Useful Seat Hours ÷ Productive Hours per Agent per Week</span>
+          <h4>Productive HC Supported <span class="info-tip" data-tip="How many HC can be supported when weekly useful seat-hours are converted by full shift hours in the scenario comparison.">?</span></h4>
+          <p>How many HC can be supported by the useful seat-hours from that scenario.</p>
+          <span class="formula-code">Productive HC Supported = Weekly Useful Seat Hours ÷ (Shift Length × Working Days)</span>
         </div>
 
         <div class="glossary-item">
-          <h4>Uncovered Demand Hours <span class="info-tip" data-tip="Remaining productive demand not covered by useful seat-hours in that shift mix.">?</span></h4>
-          <p>Remaining productive demand not covered by the useful seat-hours of the shift mix.</p>
-          <span class="formula-code">Uncovered Demand Hours = Max(0, Weekly Productive Hours Demand − Weekly Useful Seat Hours)</span>
+          <h4>Uncovered Demand Hours <span class="info-tip" data-tip="Remaining demand not covered by useful seat-hours in that shift mix.">?</span></h4>
+          <p>Remaining demand not covered by the useful seat-hours of the shift mix.</p>
+          <span class="formula-code">Uncovered Demand Hours = Max(0, Weekly Demand Hours − Weekly Useful Seat Hours)</span>
         </div>
       </div>
 
@@ -1406,16 +1406,64 @@ Seat Reuse Multiplier = Theoretical Seat Turns × Optimization Efficiency, if Th
           ? inputs.requiredProductiveHC
           : plannerResult.productiveHCCapacity;
 
-      const productiveHoursPerDay = getProductiveHoursPerDay(shiftLength);
-      const productiveHoursPerAgentPerWeek = productiveHoursPerDay * workingDays;
-      const weeklyProductiveHoursDemand = targetProductiveHC * productiveHoursPerAgentPerWeek;
-      const dailyProductiveHoursDemand = hoopDays > 0 ? (weeklyProductiveHoursDemand / hoopDays) : 0;
+      const scenarioHoursPerDay = shiftLength;
+      const scenarioHoursPerAgentPerWeek = scenarioHoursPerDay * workingDays;
+      const weeklyDemandHours = targetProductiveHC * scenarioHoursPerAgentPerWeek;
+      const dailyDemandHours = hoopDays > 0 ? (weeklyDemandHours / hoopDays) : 0;
+      const reuse = plannerResult.core?.practicalReuse ?? 0;
+
+      if (reuse <= 1){
+        const generatedSeatHoursPerDay = seatBase * scenarioHoursPerDay;
+        const overlapWastePerDay = 0;
+        const netUsefulSeatHoursPerDay = generatedSeatHoursPerDay;
+        const weeklyUsefulSeatHours = netUsefulSeatHoursPerDay * hoopDays;
+
+        const productiveHCSupported =
+          scenarioHoursPerAgentPerWeek > 0
+            ? (weeklyUsefulSeatHours / scenarioHoursPerAgentPerWeek)
+            : 0;
+
+        const uncoveredDemandHoursPerWeek = Math.max(0, weeklyDemandHours - weeklyUsefulSeatHours);
+        const idleSeatHoursPerDay = Math.max(0, generatedSeatHoursPerDay - dailyDemandHours);
+        const idleSeatHoursPerWeek = idleSeatHoursPerDay * hoopDays;
+        const coverageEfficiency = generatedSeatHoursPerDay > 0 ? 100 : 0;
+        const availableSeatHoursPerDay = seatBase * hoopHours;
+        const seatUtilization =
+          availableSeatHoursPerDay > 0
+            ? (netUsefulSeatHoursPerDay / availableSeatHoursPerDay) * 100
+            : 0;
+
+        let risk = 'Low';
+        if (uncoveredDemandHoursPerWeek > 0 || coverageEfficiency < 75) {
+          risk = 'High';
+        } else if (
+          coverageEfficiency < 85 ||
+          idleSeatHoursPerWeek > (generatedSeatHoursPerDay * hoopDays * 0.12)
+        ) {
+          risk = 'Medium';
+        }
+
+        return [{
+          scenario: 'Single Shift',
+          shiftMix: `${shiftLength}h fixed shift`,
+          waveSeats: [seatBase],
+          generatedSeatHoursPerDay,
+          overlapWastePerDay,
+          netUsefulSeatHoursPerDay,
+          coverageEfficiency,
+          idleSeatHoursPerWeek,
+          productiveHCSupported,
+          uncoveredDemandHoursPerWeek,
+          seatUtilization,
+          risk
+        }];
+      }
 
       const scenarios = getShiftMixScenarios(seatBase);
 
       return scenarios.map(s => {
         const generatedSeatHoursPerDay = s.waveSeats.reduce(
-          (sum, seats) => sum + (seats * productiveHoursPerDay), 0
+          (sum, seats) => sum + (seats * scenarioHoursPerDay), 0
         );
 
         let overlapWastePerDay = 0;
@@ -1430,12 +1478,12 @@ Seat Reuse Multiplier = Theoretical Seat Turns × Optimization Efficiency, if Th
         const weeklyUsefulSeatHours = netUsefulSeatHoursPerDay * hoopDays;
 
         const productiveHCSupported =
-          productiveHoursPerAgentPerWeek > 0
-            ? (weeklyUsefulSeatHours / productiveHoursPerAgentPerWeek)
+          scenarioHoursPerAgentPerWeek > 0
+            ? (weeklyUsefulSeatHours / scenarioHoursPerAgentPerWeek)
             : 0;
 
-        const uncoveredDemandHoursPerWeek = Math.max(0, weeklyProductiveHoursDemand - weeklyUsefulSeatHours);
-        const idleSeatHoursPerDay = Math.max(0, generatedSeatHoursPerDay - dailyProductiveHoursDemand);
+        const uncoveredDemandHoursPerWeek = Math.max(0, weeklyDemandHours - weeklyUsefulSeatHours);
+        const idleSeatHoursPerDay = Math.max(0, generatedSeatHoursPerDay - dailyDemandHours);
         const idleSeatHoursPerWeek = idleSeatHoursPerDay * hoopDays;
 
         const coverageEfficiency =
@@ -1504,7 +1552,6 @@ Seat Reuse Multiplier = Theoretical Seat Turns × Optimization Efficiency, if Th
       if (x.planningMode === 'capacity'){
         const usableSeats = Math.max(0, x.totalSeats - x.blockedSeats - x.supportSeats);
         const baseWeeklyRosterHC = usableSeats * core.weeklyFactor;
-
         const adjustedWeeklyRosterHC = baseWeeklyRosterHC * core.practicalReuse * capacityBufferFactor;
         const productiveHCCapacity = adjustedWeeklyRosterHC * shrinkageFactor;
 
@@ -1812,6 +1859,12 @@ Seat Reuse Multiplier = Theoretical Seat Turns × Optimization Efficiency, if Th
     function renderShiftMixComparisonV21(x, plannerResult){
       const rows = buildStrictShiftMixComparison(x, plannerResult);
       const body = $('shiftMixTableBody');
+      const note = $('scenarioComparisonNote');
+      const reuse = plannerResult.core?.practicalReuse ?? 0;
+
+      note.textContent = reuse <= 1
+        ? 'This comparison is in single-shift mode because the current setup is effectively a one-turn seat model. The table shows fixed-shift seat-hour support without multi-wave overlap logic.'
+        : 'This comparison is in multi-wave mode because the current setup allows seat reuse beyond a single turn. The table uses generated seat-hours, overlap waste, net useful seat-hours, productive HC support, uncovered demand, and risk.';
 
       body.innerHTML = rows.map(r => `
         <tr>
@@ -1838,16 +1891,22 @@ Seat Reuse Multiplier = Theoretical Seat Turns × Optimization Efficiency, if Th
     function renderRecommendationV21(x, plannerResult, shiftMixRows){
       const recommended = getRecommendedShiftMix(shiftMixRows);
       latestRecommendation = recommended;
+      const reuse = plannerResult.core?.practicalReuse ?? 0;
 
-      const wavePattern = recommended.scenario === 'Standard'
-        ? '06:00 to 15:00 | 14:00 to 23:00'
-        : recommended.scenario === 'High Utilization'
-          ? '06:00 to 15:00 | 14:00 to 23:00 | 22:00 to 06:00'
-          : '05:30 to 14:30 | 13:30 to 22:30 | 21:30 to 06:00';
+      let wavePattern = 'Single-shift operating window';
+      if (reuse > 1){
+        wavePattern = recommended.scenario === 'Standard'
+          ? '06:00 to 15:00 | 14:00 to 23:00'
+          : recommended.scenario === 'High Utilization'
+            ? '06:00 to 15:00 | 14:00 to 23:00 | 22:00 to 06:00'
+            : '05:30 to 14:30 | 13:30 to 22:30 | 21:30 to 06:00';
+      }
 
       $('recTitle').textContent = `Recommended shift design: ${recommended.shiftMix}`;
       $('recDesc').textContent =
-        `${recommended.shiftMix} is recommended for the current setup. Suggested wave pattern: ${wavePattern}. This option ranks best after sorting uncovered demand first, then coverage efficiency, then idle seat waste, then risk.`;
+        reuse <= 1
+          ? `${recommended.shiftMix} is recommended for the current setup because the operation is effectively a single-shift seat model. Suggested operating pattern: ${wavePattern}.`
+          : `${recommended.shiftMix} is recommended for the current setup. Suggested wave pattern: ${wavePattern}. This option ranks best after sorting uncovered demand first, then coverage efficiency, then idle seat waste, then risk.`;
 
       $('recommendList').innerHTML = `
         <div class="recommend-stat">
@@ -1873,7 +1932,7 @@ Seat Reuse Multiplier = Theoretical Seat Turns × Optimization Efficiency, if Th
         <div class="recommend-stat">
           <div class="k">Uncovered Demand</div>
           <div class="v">${round(recommended.uncoveredDemandHoursPerWeek)}h</div>
-          <div class="d">Remaining productive demand not covered.</div>
+          <div class="d">Remaining demand not covered.</div>
         </div>
       `;
 
